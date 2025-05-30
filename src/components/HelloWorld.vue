@@ -11,6 +11,10 @@ const count = ref(0)
 <template>
   <h1>{{ msg }}</h1>
 
+  <div class="objective">
+    I am seeking challenging assignments where my technical, creative skills and abilities as certified Scrum fundamentals, QA Lead(SDET) with functional and automation can be effectively utilized with industrial best Quality analysis practices.
+  </div>
+
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
     <p>
@@ -37,6 +41,16 @@ const count = ref(0)
 </template>
 
 <style scoped>
+.objective {
+  background: #ede7f6;
+  color: #4527a0;
+  padding: 1.2em;
+  border-radius: 10px;
+  margin-bottom: 1.5em;
+  font-size: 1.1em;
+  font-weight: 500;
+  box-shadow: 0 2px 8px #7c4dff22;
+}
 .read-the-docs {
   color: #888;
 }
