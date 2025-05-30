@@ -1,14 +1,21 @@
 <script setup>
+// Import Vue's ref for reactivity
 import { ref } from 'vue'
 
+// Define props for the component
 defineProps({
   msg: String,
 })
 
+// Reactive counter for demonstration
 const count = ref(0)
 </script>
 
 <template>
+  <!--
+    HelloWorld component: displays a message, a personal objective, and a counter button.
+    Includes links to Vue resources for learning and testing HMR.
+  -->
   <h1>{{ msg }}</h1>
 
   <div class="objective">
@@ -41,6 +48,10 @@ const count = ref(0)
 </template>
 
 <style scoped>
+/*
+  Styles for the HelloWorld component.
+  Includes custom card, objective, and documentation link styles.
+*/
 .objective {
   background: #ede7f6;
   color: #4527a0;

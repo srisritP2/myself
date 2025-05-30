@@ -1,8 +1,10 @@
 <script setup>
+// Import HelloWorld component and Vue composition API utilities
 import HelloWorld from './components/HelloWorld.vue'
 import { ref, onMounted, computed } from 'vue';
 import { useTheme } from 'vuetify';
 
+// Set up default and fallback profile images
 const defaultAvatar = import.meta.env.BASE_URL + 'vite.svg';
 const profilePhotoUrl = ref(import.meta.env.BASE_URL + 'SS.svg');
 function onImgError(e) {
@@ -10,11 +12,10 @@ function onImgError(e) {
   e.target.src = defaultAvatar;
 }
 
-// Animated counters
+// Animated counters for experience, projects, and clients
 const expYears = ref(0);
 const projects = ref(0);
 const clients = ref(0);
-
 function animateCounter(refVar, target, duration = 1200) {
   let start = 0;
   const step = Math.ceil(target / (duration / 16));
@@ -28,14 +29,13 @@ function animateCounter(refVar, target, duration = 1200) {
     }
   }, 16);
 }
-
 onMounted(() => {
   animateCounter(expYears, 10);
   animateCounter(projects, 285);
   animateCounter(clients, 190);
 });
 
-// Scroll to top button
+// Scroll to top button logic
 const showScrollTop = ref(false);
 function handleScroll() {
   showScrollTop.value = window.scrollY > 200;
@@ -47,7 +47,7 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Dark mode toggle
+// Dark mode toggle using Vuetify theme
 const theme = useTheme();
 const isDark = computed(() => theme.global.current.value.dark);
 function toggleDark() {
@@ -55,7 +55,7 @@ function toggleDark() {
   document.body.classList.toggle('dark', !isDark.value);
 }
 
-// Social/contact icons
+// Social/contact icons for quick access
 const socials = [
   { icon: 'mdi-linkedin', url: 'https://linkedin.com/in/srisri-tummu' },
   { icon: 'mdi-github', url: 'https://github.com/srisritummu' },
@@ -63,7 +63,7 @@ const socials = [
   { icon: 'mdi-phone', url: 'tel:+919999999999' },
 ];
 
-// Testimonials
+// Testimonials carousel data and logic
 const testimonials = [
   {
     name: 'John Doe',
@@ -96,7 +96,7 @@ onMounted(() => {
   testimonialInterval = setInterval(nextTestimonial, 6000);
 });
 
-// Tech stack
+// Tech stack and hobbies/interests arrays for display
 const techStack = [
   { name: 'Selenium', icon: 'mdi-language-java' },
   { name: 'Cucumber', icon: 'mdi-leaf' },
@@ -109,8 +109,6 @@ const techStack = [
   { name: 'HTML5', icon: 'mdi-language-html5' },
   { name: 'CSS3', icon: 'mdi-language-css3' },
 ];
-
-// Hobbies & Interests
 const hobbies = [
   { name: 'Painting', icon: 'mdi-palette' },
   { name: 'Music', icon: 'mdi-music' },
@@ -120,7 +118,7 @@ const hobbies = [
   { name: 'Preaching', icon: 'mdi-church' },
 ];
 
-// Section animation observer
+// Animate sections on scroll for entrance effect
 function animateOnScroll(entries, observer) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -133,14 +131,19 @@ onMounted(() => {
   const observer = new IntersectionObserver(animateOnScroll, { threshold: 0.15 });
   document.querySelectorAll('.animate-section').forEach(el => observer.observe(el));
 });
-// Resume download
+
+// Resume download URL (placed in public/ for static serving)
 const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
 </script>
 
 <template>
+  <!--
+    Main application layout using Vuetify components and custom sections.
+    Each section is wrapped with comments and class names for clarity.
+  -->
   <v-app>
     <v-main>
-      <!-- Hero Section -->
+      <!-- Hero Section: Profile, counters, resume, social links, dark mode toggle -->
       <section class="hero-section animate-section">
         <div class="hero-content">
           <v-avatar size="120" class="hero-avatar">
@@ -167,9 +170,11 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
               <span class="label">Clients</span>
             </div>
           </div>
+          <!-- Download Resume Button -->
           <v-btn color="primary" class="resume-btn" :href="resumeUrl" download>
             <v-icon left>mdi-download</v-icon>Download Resume
           </v-btn>
+          <!-- Social and contact icons -->
           <div class="hero-contact">
             <span class="email">srisri.tummu@email.com</span>
             <div class="social-icons">
@@ -178,6 +183,7 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
               </a>
             </div>
           </div>
+          <!-- Dark mode toggle button -->
           <v-btn icon class="dark-toggle" @click="toggleDark">
             <v-icon :color="isDark ? '#fff' : 'primary'" size="28">
               {{ isDark ? 'mdi-white-balance-sunny' : 'mdi-moon-waning-crescent' }}
@@ -331,6 +337,10 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
 </template>
 
 <style scoped>
+/*
+  Custom styles for layout, theming, and responsive design.
+  Use clear class names and comments for maintainability.
+*/
 body, #app, .v-application {
   min-height: 100vh;
   margin: 0;

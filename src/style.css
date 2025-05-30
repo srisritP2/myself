@@ -1,3 +1,11 @@
+/*
+  Global styles for the portfolio site.
+  - Use CSS variables for theming.
+  - Keep selectors specific and modular.
+  - Use comments to explain non-obvious rules.
+  - Prefer utility classes for layout and spacing.
+*/
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

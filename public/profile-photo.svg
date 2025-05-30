@@ -1,3 +1,4 @@
+<!-- Profile photo SVG for Sri Sri Tummu Portfolio. Place all SVG assets in public/ for static serving. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
   <!-- Example SVG content, replace with your actual SVG -->
   <circle cx="60" cy="60" r="58" fill="#f7b733" stroke="#fff" stroke-width="4"/>
