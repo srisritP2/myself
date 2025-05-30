@@ -134,7 +134,7 @@ onMounted(() => {
   document.querySelectorAll('.animate-section').forEach(el => observer.observe(el));
 });
 // Resume download
-const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
+const resumeUrl = computed(() => import.meta.env.BASE_URL + 'resume.pdf');
 </script>
 
 <template>
@@ -167,7 +167,7 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
               <span class="label">Clients</span>
             </div>
           </div>
-          <v-btn color="primary" class="resume-btn" :href="`${import.meta.env.BASE_URL}SriSriTummu_Resume.pdf`" download>
+          <v-btn color="primary" class="resume-btn" :href="resumeUrl" download>
             <v-icon left>mdi-download</v-icon>Download Resume
           </v-btn>
           <div class="hero-contact">
