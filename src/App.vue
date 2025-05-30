@@ -134,7 +134,7 @@ onMounted(() => {
   document.querySelectorAll('.animate-section').forEach(el => observer.observe(el));
 });
 // Resume download
-const resumeUrl = computed(() => import.meta.env.BASE_URL + 'resume.pdf');
+const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
 </script>
 
 <template>
