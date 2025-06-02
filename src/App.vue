@@ -143,7 +143,14 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
 <template>
   <v-app>
     <v-main>
-      <!-- Hero Section: Profile, counters, resume, social links, dark mode toggle -->
+      <div class="global-dark-toggle-wrapper">
+        <v-btn icon class="global-dark-toggle" @click="toggleDark">
+          <v-icon :color="isDark ? '#fff' : 'primary'" size="32">
+            {{ isDark ? 'mdi-white-balance-sunny' : 'mdi-moon-waning-crescent' }}
+          </v-icon>
+        </v-btn>
+      </div>
+      <!-- Hero Section: Profile, counters, resume, social links -->
       <HeroSection
         :profilePhotoUrl="profilePhotoUrl"
         :defaultAvatar="defaultAvatar"
@@ -317,6 +324,71 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   border: 1.5px solid #43cea2;
   box-shadow: 0 4px 24px rgba(67, 206, 162, 0.18);
 }
+
+/* --- Glassmorphism Effect for Cards & Hero --- */
+.main-card, .details-section, .testimonial-card, .hero-section {
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  background: rgba(255, 255, 255, 0.55) !important;
+  box-shadow: 0 8px 40px 0 rgba(67,206,162,0.18), 0 2px 12px rgba(36,36,122,0.08);
+  border: 1.5px solid rgba(227,242,253,0.55);
+}
+.v-application.theme--dark .main-card,
+.v-application.theme--dark .details-section,
+.v-application.theme--dark .testimonial-card,
+.v-application.theme--dark .hero-section {
+  background: rgba(35, 43, 54, 0.65) !important;
+  box-shadow: 0 8px 40px 0 rgba(67,206,162,0.22), 0 2px 12px rgba(36,36,122,0.13);
+  border: 1.5px solid rgba(67,206,162,0.32);
+}
+
+/* --- Parallax Effect for Hero Section --- */
+.hero-section {
+  background-attachment: fixed;
+}
+@media (max-width: 700px) {
+  .hero-section {
+    background-attachment: scroll;
+  }
+}
+
+/* --- Micro-interactions: Button & Chip Animations --- */
+.resume-btn, .tech-item, .hobby-item, .social-link {
+  will-change: transform, box-shadow;
+}
+.resume-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(67,206,162,0.18);
+}
+.tech-item:active, .hobby-item:active {
+  transform: scale(0.96) rotate(-2deg);
+  box-shadow: 0 2px 8px rgba(67,206,162,0.18);
+}
+.social-link:active {
+  transform: scale(0.93) rotate(2deg);
+  box-shadow: 0 2px 8px rgba(67,206,162,0.18);
+}
+
+/* --- Further Animation: Floating Decorative Elements --- */
+.hero-section::before, .hero-section::after {
+  animation: floatY 6s ease-in-out infinite alternate;
+}
+@keyframes floatY {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(24px); }
+}
+
+/* --- Section Entrance Animation: Fade+Slide --- */
+.animate-section {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition: opacity 0.7s cubic-bezier(.4,2,.6,1), transform 0.7s cubic-bezier(.4,2,.6,1);
+}
+.animate-section.in-view {
+  opacity: 1;
+  transform: none;
+}
+
 .sri-sri {
   color: #185a9d !important;
 }
@@ -324,7 +396,7 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   background: linear-gradient(120deg, #f9f871 0%, #43cea2 60%, #185a9d 100%);
   color: #232b36;
   border-radius: 48px 48px 120px 120px;
-  box-shadow: 0 12px 48px rgba(67, 206, 162, 0.22), 0 4px 32px rgba(36, 36, 122, 0.13);
+  box-shadow: 0 12px 48px rgba(67,206,162,0.22), 0 4px 32px rgba(36, 36, 122, 0.13);
   padding: 64px 0 56px 0;
   max-width: 720px;
   width: 100%;
@@ -402,23 +474,26 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
 }
 .hero-counters {
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  align-items: flex-end;
-  gap: 64px;
+  align-items: stretch;
+  gap: 32px;
   margin-bottom: 36px;
 }
 .counter {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: 1.15rem;
   background: rgba(255,255,255,0.22);
   border-radius: 20px;
   padding: 18px 28px;
   box-shadow: 0 4px 18px rgba(67,206,162,0.13);
-  min-width: 100px;
+  min-width: 120px;
+  min-height: 100px;
   transition: background 0.2s;
   border: 1.5px solid #e3f2fd;
 }
@@ -435,6 +510,27 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   color: #232b36;
   opacity: 0.85;
 }
+.counter .expert {
+  font-size: 1.02rem;
+  color: #43cea2;
+  font-weight: 700;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+@media (max-width: 700px) {
+  .hero-counters {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+  .counter {
+    min-width: 90vw;
+    min-height: 60px;
+    padding: 10px 0;
+  }
+}
+
+/* --- Resume Button --- */
 .resume-btn {
   background: linear-gradient(90deg, #43cea2 0%, #f9f871 100%);
   color: #185a9d;
@@ -634,6 +730,17 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   color: #f9f871;
 }
 
+/* --- Upgraded Section Card Gradient Backgrounds --- */
+.details-section, .testimonial-card {
+  background: linear-gradient(120deg, #f9f871 0%, #43cea2 60%, #185a9d 100%) !important;
+  color: #232b36;
+}
+.v-application.theme--dark .details-section,
+.v-application.theme--dark .testimonial-card {
+  background: linear-gradient(120deg, #232b36 0%, #185a9d 60%, #43cea2 100%) !important;
+  color: #f9f871;
+}
+
 @media (max-width: 700px) {
   .hero-section {
     padding: 18px 0 8px 0;
@@ -675,5 +782,30 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
     width: 48px;
     height: 48px;
   }
+}
+
+/* --- Global Dark Toggle Button --- */
+.global-dark-toggle {
+  pointer-events: auto;
+  background: rgba(255,255,255,0.18) !important;
+  box-shadow: 0 2px 8px rgba(67,206,162,0.13);
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.global-dark-toggle:hover {
+  background: rgba(67,206,162,0.18) !important;
+}
+@media (max-width: 700px) {
+  .global-dark-toggle-wrapper {
+    top: 10px;
+    right: 10px;
+  }
+}
+.global-dark-toggle-wrapper {
+  position: absolute;
+  top: 32px;
+  right: 10px;
+  z-index: 1000;
+  pointer-events: none;
 }
 </style>

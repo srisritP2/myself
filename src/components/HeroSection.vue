@@ -32,17 +32,17 @@ const props = defineProps({
         <div class="counter">
           <v-icon color="primary">mdi-timer</v-icon>
           <span class="count">{{ expYears }}</span>
-          <span class="label">Years Experience</span>
+          <span class="label">Years of Experience </span>
         </div>
         <div class="counter">
           <v-icon color="primary">mdi-briefcase-variant</v-icon>
           <span class="count">{{ projects }}</span>
-          <span class="label">Projects</span>
+          <span class="label">Projects Delivered</span>
         </div>
         <div class="counter">
           <v-icon color="primary">mdi-account-group</v-icon>
           <span class="count">{{ clients }}</span>
-          <span class="label">Clients</span>
+          <span class="label">Clients Served</span>
         </div>
       </div>
       <!-- Download Resume Button -->
@@ -58,16 +58,10 @@ const props = defineProps({
           </a>
         </div>
       </div>
-      <!-- Dark mode toggle button -->
-      <v-btn icon class="dark-toggle" @click="toggleDark">
-        <v-icon :color="isDark ? '#fff' : 'primary'" size="28">
-          {{ isDark ? 'mdi-white-balance-sunny' : 'mdi-moon-waning-crescent' }}
-        </v-icon>
-      </v-btn>
     </div>
   </section>
 </template>
 
 <style scoped>
-/* ...existing hero section styles can be moved here if desired... */
+/* ...existing hero section styles... */
 </style>
