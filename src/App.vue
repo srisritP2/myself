@@ -1,8 +1,12 @@
 <script setup>
-// Import HelloWorld component and Vue composition API utilities
-import HelloWorld from './components/HelloWorld.vue'
+// Import components and Vue composition API utilities
 import { ref, onMounted, computed } from 'vue';
 import { useTheme } from 'vuetify';
+import HeroSection from './components/HeroSection.vue';
+import DetailsSection from './components/DetailsSection.vue';
+import TechStack from './components/TechStack.vue';
+import Hobbies from './components/Hobbies.vue';
+import Testimonials from './components/Testimonials.vue';
 
 // Set up default and fallback profile images
 const defaultAvatar = import.meta.env.BASE_URL + 'vite.svg';
@@ -137,195 +141,104 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
 </script>
 
 <template>
-  <!--
-    Main application layout using Vuetify components and custom sections.
-    Each section is wrapped with comments and class names for clarity.
-  -->
   <v-app>
     <v-main>
       <!-- Hero Section: Profile, counters, resume, social links, dark mode toggle -->
-      <section class="hero-section animate-section">
-        <div class="hero-content">
-          <v-avatar size="120" class="hero-avatar">
-            <img :src="profilePhotoUrl" @error="onImgError" alt="Sri Sri Tummu" />
-          </v-avatar>
-          <h1 class="hero-title">
-            Hi, I'm <span class="sri-sri">Sri Sri</span> Tummu
-          </h1>
-          <p class="hero-subtitle">QA Lead | Automation Specialist | Mentor</p>
-          <div class="hero-counters">
-            <div class="counter">
-              <v-icon color="primary">mdi-timer</v-icon>
-              <span class="count">{{ expYears }}</span>
-              <span class="label">Years Experience</span>
-            </div>
-            <div class="counter">
-              <v-icon color="primary">mdi-briefcase-variant</v-icon>
-              <span class="count">{{ projects }}</span>
-              <span class="label">Projects</span>
-            </div>
-            <div class="counter">
-              <v-icon color="primary">mdi-account-group</v-icon>
-              <span class="count">{{ clients }}</span>
-              <span class="label">Clients</span>
-            </div>
-          </div>
-          <!-- Download Resume Button -->
-          <v-btn color="primary" class="resume-btn" :href="resumeUrl" download>
-            <v-icon left>mdi-download</v-icon>Download Resume
-          </v-btn>
-          <!-- Social and contact icons -->
-          <div class="hero-contact">
-            <span class="email">srisri.tummu@email.com</span>
-            <div class="social-icons">
-              <a v-for="s in socials" :key="s.icon" :href="s.url" target="_blank" rel="noopener" class="social-link">
-                <v-icon size="28">{{ s.icon }}</v-icon>
-              </a>
-            </div>
-          </div>
-          <!-- Dark mode toggle button -->
-          <v-btn icon class="dark-toggle" @click="toggleDark">
-            <v-icon :color="isDark ? '#fff' : 'primary'" size="28">
-              {{ isDark ? 'mdi-white-balance-sunny' : 'mdi-moon-waning-crescent' }}
-            </v-icon>
-          </v-btn>
-        </div>
-      </section>
+      <HeroSection
+        :profilePhotoUrl="profilePhotoUrl"
+        :defaultAvatar="defaultAvatar"
+        :expYears="expYears"
+        :projects="projects"
+        :clients="clients"
+        :socials="socials"
+        :isDark="isDark"
+        :toggleDark="toggleDark"
+        :resumeUrl="resumeUrl"
+        :onImgError="onImgError"
+      />
 
       <!-- What do I help? -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-help-circle</v-icon> What do I help?
-        </v-card-title>
-        <v-card-text>
-          I help teams deliver high-quality software through robust QA processes, automation, and mentoring.
-        </v-card-text>
-      </v-card>
+      <DetailsSection icon="mdi-help-circle" title="What do I help?">
+        I help teams deliver high-quality software through robust QA processes, automation, and mentoring.
+      </DetailsSection>
 
       <!-- Software Skills -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-laptop</v-icon> Software Skills
-        </v-card-title>
-        <v-card-text>
-          Selenium, Cucumber, JMeter, Java, Jira, Oracle SQL, Git, Linux, HTML5, CSS3
-        </v-card-text>
-      </v-card>
+      <DetailsSection icon="mdi-laptop" title="Software Skills">
+        Selenium, Cucumber, JMeter, Java, Jira, Oracle SQL, Git, Linux, HTML5, CSS3
+      </DetailsSection>
 
       <!-- Tech Stack -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-tools</v-icon> Tech Stack
-        </v-card-title>
-        <v-card-text>
-          <div class="tech-stack">
-            <div v-for="tech in techStack" :key="tech.name" class="tech-item">
-              <v-icon size="32" color="primary">{{ tech.icon }}</v-icon>
-              <span>{{ tech.name }}</span>
-            </div>
+      <DetailsSection icon="mdi-tools" title="Tech Stack">
+        <div class="tech-stack">
+          <div v-for="tech in techStack" :key="tech.name" class="tech-item">
+            <v-icon size="32" color="primary">{{ tech.icon }}</v-icon>
+            <span>{{ tech.name }}</span>
           </div>
-        </v-card-text>
-      </v-card>
+        </div>
+      </DetailsSection>
 
       <!-- Achievements -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-trophy</v-icon> Achievements
-        </v-card-title>
-        <v-card-text>
-          ISTQB Certified, Best QA Lead 2022, Speaker at QA Summit 2023
-        </v-card-text>
-      </v-card>
+      <DetailsSection icon="mdi-trophy" title="Achievements">
+        ISTQB Certified, Best QA Lead 2022, Speaker at QA Summit 2023
+      </DetailsSection>
 
       <!-- Professional Summary -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-account-tie</v-icon> Professional Summary
-        </v-card-title>
-        <v-card-text>
-          Over 10 years of experience in QA, automation, and team leadership across multiple domains.
-        </v-card-text>
-      </v-card>
+      <DetailsSection icon="mdi-account-tie" title="Professional Summary">
+        Over 10 years of experience in QA, automation, and team leadership across multiple domains.
+      </DetailsSection>
 
       <!-- Work Experience -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-briefcase</v-icon> Work Experience
-        </v-card-title>
-        <v-card-text>
-          <ul>
-            <li>QA Lead, XTG Global (2021-Present)</li>
-            <li>Senior QA Engineer, Kairos Technologies (2017-2021)</li>
-            <li>QA Engineer, Amzur Technologies (2013-2017)</li>
-          </ul>
-        </v-card-text>
-      </v-card>
+      <DetailsSection icon="mdi-briefcase" title="Work Experience">
+        <ul>
+          <li>QA Lead, XTG Global (2021-Present)</li>
+          <li>Senior QA Engineer, Kairos Technologies (2017-2021)</li>
+          <li>QA Engineer, Amzur Technologies (2013-2017)</li>
+        </ul>
+      </DetailsSection>
 
       <!-- Education -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-school</v-icon> Education
-        </v-card-title>
-        <v-card-text>
-          B.Tech in Computer Science, JNTU Hyderabad
-        </v-card-text>
-      </v-card>
+      <DetailsSection icon="mdi-school" title="Education">
+        B.Tech in Computer Science, JNTU Hyderabad
+      </DetailsSection>
 
       <!-- Co-Curricular Activities -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-run-fast</v-icon> Co-Curricular Activities
-        </v-card-title>
-        <v-card-text>
-          Speaker at QA events, Hackathon mentor, Volunteer for tech-for-good initiatives
-        </v-card-text>
-      </v-card>
+      <DetailsSection icon="mdi-run-fast" title="Co-Curricular Activities">
+        Speaker at QA events, Hackathon mentor, Volunteer for tech-for-good initiatives
+      </DetailsSection>
 
       <!-- Hobbies & Interests -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-emoticon-happy</v-icon> Hobbies & Interests
-        </v-card-title>
-        <v-card-text>
-          <div class="hobbies-list">
-            <div v-for="hobby in hobbies" :key="hobby.name" class="hobby-item">
-              <v-icon size="28" color="primary">{{ hobby.icon }}</v-icon>
-              <span>{{ hobby.name }}</span>
-            </div>
+      <DetailsSection icon="mdi-emoticon-happy" title="Hobbies & Interests">
+        <div class="hobbies-list">
+          <div v-for="hobby in hobbies" :key="hobby.name" class="hobby-item">
+            <v-icon size="28" color="primary">{{ hobby.icon }}</v-icon>
+            <span>{{ hobby.name }}</span>
           </div>
-        </v-card-text>
-      </v-card>
+        </div>
+      </DetailsSection>
 
       <!-- Personal Profile -->
-      <v-card class="main-card animate-section">
-        <v-card-title>
-          <v-icon left color="primary">mdi-account-circle</v-icon> Personal Profile
-        </v-card-title>
-        <v-card-text>
-          Passionate about quality, technology, and helping others grow in their careers.
-        </v-card-text>
-      </v-card>
+      <DetailsSection icon="mdi-account-circle" title="Personal Profile">
+        Passionate about quality, technology, and helping others grow in their careers.
+      </DetailsSection>
 
       <!-- Testimonials Carousel -->
-      <v-card class="main-card animate-section testimonial-card">
-        <v-card-title>
-          <v-icon left color="primary">mdi-comment-quote</v-icon> Testimonials
-        </v-card-title>
-        <v-card-text>
-          <div class="testimonial-carousel">
-            <v-avatar size="56" class="testimonial-avatar">
-              <img :src="testimonials[testimonialIndex].avatar" alt="Testimonial" />
-            </v-avatar>
-            <div class="testimonial-text">"{{ testimonials[testimonialIndex].text }}"</div>
-            <div class="testimonial-author">- {{ testimonials[testimonialIndex].name }}, <span class="testimonial-title">{{ testimonials[testimonialIndex].title }}</span></div>
-            <div class="testimonial-controls">
-              <v-btn icon @click="prevTestimonial"><v-icon>mdi-chevron-left</v-icon></v-btn>
-              <v-btn icon @click="nextTestimonial"><v-icon>mdi-chevron-right</v-icon></v-btn>
-            </div>
-          </div>
-        </v-card-text>
-      </v-card>
+      <div class="main-card animate-section">
+        <Testimonials
+          :testimonials="testimonials"
+          :testimonialIndex="testimonialIndex"
+          :nextTestimonial="nextTestimonial"
+          :prevTestimonial="prevTestimonial"
+        />
+      </div>
 
+      <!-- Section Divider -->
+      <hr class="section-divider" />
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        &copy; {{ new Date().getFullYear() }} Sri Sri Tummu &mdash; All rights reserved.<br>
+        <span style="font-size:0.95em;">Connect: <a href="mailto:srisri.tummu@email.com" style="color:#185a9d;">srisri.tummu@email.com</a></span>
+      </footer>
       <!-- Scroll to Top Button -->
       <transition name="fade">
         <v-btn v-if="showScrollTop" class="scroll-top-btn" color="primary" icon @click="scrollToTop">
@@ -345,238 +258,422 @@ body, #app, .v-application {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background: #f7b733;
+  font-size: 1.15rem; /* Increased base font size */
+  /* Modern gradient: deep blue to teal to light yellow */
+  background: linear-gradient(135deg, #232b36 0%, #43cea2 60%, #f9f871 100%);
 }
 body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
-  background: #181818 !important;
+  background: linear-gradient(135deg, #181818 0%, #232b36 60%, #43cea2 100%) !important;
 }
 .main-bg {
-  background: #f7b733;
+  background: transparent;
   min-height: 100vh;
   padding-bottom: 40px;
   transition: background 0.3s;
 }
 .main-bg.dark {
-  background: #181818;
+  background: transparent;
+}
+.main-card {
+  position: relative;
+  background: #fffdfa !important; /* Soft off-white for cards */
+  color: #232b36;
+  border: 1.5px solid #e0e7ef;
+  box-shadow: 0 4px 24px rgba(67,206,162,0.08);
+  max-width: 850px; /* Increased from 770px */
+  font-size: 1.08rem; /* Slightly larger text in cards */
+}
+.main-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 18px;
+  background: linear-gradient(120deg, #e3f2fd 0%, #f9f871 100%);
+  opacity: 0.32;
+  pointer-events: none;
+}
+.main-card::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border-radius: 14px;
+  z-index: 0;
+  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+  opacity: 0.10;
+  pointer-events: none;
+}
+.main-card > * {
+  position: relative;
+  z-index: 1;
+}
+.v-application.theme--dark .main-card,
+.v-application--is-lt-dark .main-card {
+  background: #232b36 !important; /* Deep blue for cards in dark mode */
+  color: #f9f871 !important;
+  border: 1.5px solid #43cea2;
+  box-shadow: 0 4px 24px rgba(67, 206, 162, 0.18);
 }
 .sri-sri {
-  color: #0a2342 !important;
+  color: #185a9d !important;
 }
 .hero-section {
-  background: linear-gradient(135deg, #e3f2fd 0%, #f5f7fa 100%);
-  padding: 48px 0 32px 0;
-  text-align: center;
+  background: linear-gradient(120deg, #f9f871 0%, #43cea2 60%, #185a9d 100%);
+  color: #232b36;
+  border-radius: 48px 48px 120px 120px;
+  box-shadow: 0 12px 48px rgba(67, 206, 162, 0.22), 0 4px 32px rgba(36, 36, 122, 0.13);
+  padding: 64px 0 56px 0;
+  max-width: 720px;
+  width: 100%;
+  margin: 48px auto 56px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   position: relative;
-  margin-bottom: 32px;
-  border-radius: 0 0 32px 32px;
-  box-shadow: 0 4px 24px rgba(10,35,66,0.08);
+  overflow: hidden;
+  transition: box-shadow 0.3s, background 0.3s;
+  border: 2.5px solid #e3f2fd;
 }
-.v-application.theme--dark .hero-section,
-.v-application--is-lt-dark .hero-section {
-  background: linear-gradient(135deg, #232b36 0%, #181818 100%) !important;
-  color: #fff;
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, #fffdfa 0%, #f9f871 60%, transparent 100%);
+  opacity: 0.18;
+  z-index: 0;
+}
+.hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  right: -80px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #43cea2 0%, #185a9d 80%, transparent 100%);
+  opacity: 0.15;
+  z-index: 0;
 }
 .hero-avatar {
-  margin-bottom: 16px;
-  border: 4px solid #fff;
-  box-shadow: 0 2px 12px rgba(10,35,66,0.10);
+  margin-bottom: 28px;
+  border: 7px solid #fffdfa;
+  box-shadow: 0 8px 32px rgba(67,206,162,0.22);
+  border-radius: 50%;
+  width: 148px;
+  height: 148px;
+  object-fit: cover;
+  background: #fffdfa;
+  transition: box-shadow 0.3s;
 }
 .hero-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-size: 3.2rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  letter-spacing: -2px;
+  text-align: center;
+  background: linear-gradient(90deg, #185a9d 0%, #43cea2 60%, #f9f871 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 4px 16px rgba(67,206,162,0.13);
 }
 .hero-subtitle {
-  font-size: 1.2rem;
-  color: #1976d2;
-  margin-bottom: 24px;
+  font-size: 1.22rem;
+  color: #185a9d;
+  margin-bottom: 36px;
+  text-align: center;
+  font-weight: 700;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 8px #fffdfa44;
 }
 .hero-counters {
+  width: 100%;
+  max-width: 600px;
   display: flex;
   justify-content: center;
-  gap: 32px;
-  margin-bottom: 20px;
+  align-items: flex-end;
+  gap: 64px;
+  margin-bottom: 36px;
 }
 .counter {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  background: rgba(255,255,255,0.22);
+  border-radius: 20px;
+  padding: 18px 28px;
+  box-shadow: 0 4px 18px rgba(67,206,162,0.13);
+  min-width: 100px;
+  transition: background 0.2s;
+  border: 1.5px solid #e3f2fd;
 }
 .counter .count {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1976d2;
-  margin: 4px 0;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #185a9d;
+  margin: 4px 0 2px 0;
   transition: color 0.3s;
+  text-shadow: 0 2px 8px #f9f87144;
 }
 .counter .label {
-  font-size: 0.95rem;
-  color: #555;
+  font-size: 1.08rem;
+  color: #232b36;
+  opacity: 0.85;
 }
 .resume-btn {
-  margin: 12px 0 0 0;
-  font-weight: 600;
+  background: linear-gradient(90deg, #43cea2 0%, #f9f871 100%);
+  color: #185a9d;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(67, 206, 162, 0.15);
+  margin: 40px auto 0 auto;
+  font-weight: 900;
+  font-size: 1.13rem;
+  padding: 16px 44px;
+  letter-spacing: 1px;
+  border: none;
+  display: block;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.resume-btn:hover {
+  background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(67,206,162,0.22);
 }
 .hero-contact {
-  margin-top: 18px;
+  margin-top: 32px;
+  align-items: center;
+  justify-content: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 .hero-contact .email {
-  font-size: 1.1rem;
-  color: #0a2342;
-  margin-bottom: 6px;
+  font-size: 1.18rem;
+  color: #185a9d;
+  margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
 .social-icons {
   display: flex;
-  gap: 16px;
-  margin-top: 2px;
+  gap: 32px;
+  margin-top: 12px;
+  justify-content: center;
+  width: 100%;
 }
 .social-link {
-  color: #1976d2;
-  transition: color 0.2s;
+  color: #fff;
+  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+  border-radius: 50%;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.85rem;
+  box-shadow: 0 4px 18px rgba(67,206,162,0.18);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 .social-link:hover {
-  color: #0a2342;
-}
-.v-application.theme--dark .social-link {
-  color: #ffd600 !important;
-}
-.v-application.theme--dark .social-link:hover {
-  color: #fff !important;
-}
-.dark-toggle {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(10,35,66,0.10);
+  background: linear-gradient(135deg, #f9f871 0%, #43cea2 100%);
+  color: #185a9d;
+  transform: scale(1.18);
 }
 
-.main-card {
-  max-width: 700px;
-  margin: 32px auto 0 auto;
-  border-radius: 18px;
-  box-shadow: 0 2px 16px rgba(10,35,66,0.07);
-  transition: box-shadow 0.3s;
-  background: #fff;
-  color: #222;
+/* --- Modern Section Card Styles --- */
+.details-section {
+  background: linear-gradient(120deg, #fffdfa 0%, #e3f2fd 100%);
+  border-radius: 32px;
+  box-shadow: 0 4px 24px rgba(67,206,162,0.10), 0 2px 12px rgba(36,36,122,0.06);
+  padding: 36px 36px 28px 36px;
+  margin: 36px auto 36px auto;
+  max-width: 780px;
+  width: 100%;
+  color: #232b36;
+  position: relative;
+  transition: box-shadow 0.3s, background 0.3s;
+  border: 1.5px solid #e3f2fd;
 }
-.v-application.theme--dark .main-card,
-.v-application--is-lt-dark .main-card {
-  background: #232b36 !important;
-  color: #fff !important;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+.details-section:hover {
+  box-shadow: 0 8px 36px rgba(67,206,162,0.16), 0 4px 24px rgba(36,36,122,0.10);
+  background: linear-gradient(120deg, #e3f2fd 0%, #fffdfa 100%);
 }
-.main-card:hover {
-  box-shadow: 0 6px 32px rgba(10,35,66,0.13);
-}
-.tech-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 32px;
-  margin-top: 8px;
-}
-.tech-item {
+.details-section .section-title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1.05rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #185a9d;
+  margin-bottom: 18px;
+  letter-spacing: -0.5px;
 }
-.hobbies-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 32px;
-  margin-top: 8px;
+.details-section .section-title .v-icon {
+  margin-right: 12px;
+  color: #43cea2;
+  font-size: 2rem;
 }
-.hobby-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1.05rem;
+.details-section ul, .details-section p {
+  font-size: 1.13rem;
+  color: #232b36;
+  margin: 0 0 8px 0;
+  line-height: 1.7;
+}
+.details-section ul {
+  padding-left: 22px;
+}
+.details-section li {
+  margin-bottom: 6px;
 }
 
+/* --- Tech Stack & Hobbies --- */
+.tech-stack, .hobbies-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 12px;
+  margin-top: 12px;
+  justify-content: center;
+}
+.tech-item, .hobby-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.08rem;
+  background: #e3f2fd;
+  color: #185a9d;
+  border-radius: 12px;
+  padding: 8px 18px;
+  box-shadow: 0 2px 8px rgba(67,206,162,0.08);
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.tech-item .v-icon, .hobby-item .v-icon {
+  color: #43cea2;
+  font-size: 1.4rem;
+}
+.tech-item:hover, .hobby-item:hover {
+  background: #43cea2;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(67,206,162,0.16);
+}
+.tech-item:hover .v-icon, .hobby-item:hover .v-icon {
+  color: #fffdfa;
+}
+
+/* --- Testimonials --- */
 .testimonial-card {
-  background: linear-gradient(135deg, #f5f7fa 0%, #e3f2fd 100%);
-  margin-bottom: 32px;
-}
-.v-application.theme--dark .testimonial-card,
-.v-application--is-lt-dark .testimonial-card {
-  background: linear-gradient(135deg, #232b36 0%, #181818 100%) !important;
+  background: linear-gradient(120deg, #fffdfa 0%, #e3f2fd 100%);
+  border-radius: 32px;
+  box-shadow: 0 4px 24px rgba(67,206,162,0.10), 0 2px 12px rgba(36,36,122,0.06);
+  padding: 36px 36px 28px 36px;
+  margin: 36px auto 36px auto;
+  max-width: 780px;
+  width: 100%;
+  color: #232b36;
+  border: 1.5px solid #e3f2fd;
+  text-align: center;
+  position: relative;
 }
 .testimonial-carousel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 10px;
+  gap: 18px;
 }
 .testimonial-avatar {
-  margin-bottom: 6px;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+  border: 3px solid #43cea2;
+  box-shadow: 0 2px 8px rgba(67,206,162,0.10);
 }
 .testimonial-text {
-  font-size: 1.1rem;
+  font-size: 1.18rem;
   font-style: italic;
-  color: #1976d2;
+  color: #185a9d;
+  margin-bottom: 6px;
 }
 .testimonial-author {
-  font-weight: 600;
-  color: #0a2342;
+  font-weight: 700;
+  color: #232b36;
 }
 .testimonial-title {
-  font-weight: 400;
-  color: #555;
+  font-weight: 500;
+  color: #43cea2;
+  font-size: 1.05rem;
 }
 .testimonial-controls {
   display: flex;
-  gap: 8px;
-  margin-top: 4px;
+  gap: 12px;
+  margin-top: 8px;
+}
+.testimonial-controls .v-btn {
+  background: #43cea2;
+  color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(67,206,162,0.10);
+  transition: background 0.2s, color 0.2s;
+}
+.testimonial-controls .v-btn:hover {
+  background: #185a9d;
+  color: #f9f871;
 }
 
-.scroll-top-btn {
-  position: fixed;
-  bottom: 32px;
-  right: 32px;
-  z-index: 1000;
-  box-shadow: 0 2px 8px rgba(10,35,66,0.15);
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.4s;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-
-/* Section entrance animation */
-.animate-section {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
-}
-.animate-section.in-view {
-  opacity: 1;
-  transform: none;
-}
-
-@media (max-width: 600px) {
-  .main-card {
-    margin: 20px 8px 0 8px;
-  }
+@media (max-width: 700px) {
   .hero-section {
-    padding: 32px 0 18px 0;
+    padding: 18px 0 8px 0;
+    max-width: 99vw;
+    border-radius: 20px 20px 60px 60px;
   }
   .hero-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+  }
+  .hero-avatar {
+    width: 70px;
+    height: 70px;
   }
   .hero-counters {
-    gap: 12px;
+    gap: 8px;
   }
-  .scroll-top-btn {
-    bottom: 16px;
-    right: 16px;
+  .resume-btn {
+    padding: 10px 18px;
+    font-size: 1em;
+  }
+  .social-link {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  .details-section, .testimonial-card {
+    padding: 18px 6vw 14px 6vw;
+    border-radius: 18px;
+    max-width: 99vw;
+  }
+  .tech-stack, .hobbies-list {
+    gap: 8px 4px;
+  }
+  .tech-item, .hobby-item {
+    font-size: 0.98rem;
+    padding: 6px 10px;
+  }
+  .testimonial-avatar {
+    width: 48px;
+    height: 48px;
   }
 }
 </style>

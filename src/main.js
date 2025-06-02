@@ -10,11 +10,15 @@ import 'vuetify/styles' // Import Vuetify's base styles
 import { createVuetify } from 'vuetify' // Vuetify plugin
 import * as components from 'vuetify/components' // All Vuetify components
 import * as directives from 'vuetify/directives' // All Vuetify directives
+import '@mdi/font/css/materialdesignicons.css' // Import Material Design Icons
 
 // Create a Vuetify instance with all components and directives
 const vuetify = createVuetify({
   components,
   directives,
+  icons: {
+    defaultSet: 'mdi',
+  },
 })
 
 // Create the Vue app, register Vuetify, and mount it to the #app element in index.html
