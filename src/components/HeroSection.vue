@@ -19,10 +19,12 @@ const props = defineProps({
 </script>
 
 <template>
+  <!-- Old HeroSection is now replaced by HeroCard in App.vue -->
+  <!--
   <section class="hero-section animate-section">
     <div class="hero-content">
       <v-avatar size="120" class="hero-avatar">
-        <img :src="profilePhotoUrl" @error="onImgError" alt="Sri Sri Tummu" />
+        <img :src="profilePhotoUrl" @error="onImgError" alt="Sri Sri Tummu profile photo" loading="lazy" />
       </v-avatar>
       <h1 class="hero-title">
         Hi, I'm <span class="sri-sri">Sri Sri</span> Tummu
@@ -51,15 +53,15 @@ const props = defineProps({
       </v-btn>
       <!-- Social and contact icons -->
       <div class="hero-contact">
-        <span class="email">srisri.tummu@email.com</span>
         <div class="social-icons">
-          <a v-for="s in socials" :key="s.icon" :href="s.url" target="_blank" rel="noopener" class="social-link">
-            <v-icon size="28">{{ s.icon }}</v-icon>
+          <a v-for="social in socials" :key="social.icon" :href="social.url" class="social-link" :aria-label="`Link to ${social.icon.replace('mdi-','')}`" target="_blank" rel="noopener noreferrer">
+            <v-icon size="28">{{ social.icon }}</v-icon>
           </a>
         </div>
       </div>
     </div>
   </section>
+  -->
 </template>
 
 <style scoped>

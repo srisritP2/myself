@@ -2,15 +2,15 @@
 // Import components and Vue composition API utilities
 import { ref, onMounted, computed } from 'vue';
 import { useTheme } from 'vuetify';
-import HeroSection from './components/HeroSection.vue';
+import HeroCard from './components/HeroCard.vue';
 import DetailsSection from './components/DetailsSection.vue';
 import TechStack from './components/TechStack.vue';
 import Hobbies from './components/Hobbies.vue';
 import Testimonials from './components/Testimonials.vue';
 
 // Set up default and fallback profile images
-const defaultAvatar = import.meta.env.BASE_URL + 'vite.svg';
-const profilePhotoUrl = ref(import.meta.env.BASE_URL + 'SS.svg');
+const profilePhotoUrl = ref(import.meta.env.BASE_URL + 'Sri.jpg');
+const defaultAvatar = import.meta.env.BASE_URL + 'SS.svg';
 function onImgError(e) {
   e.target.onerror = null;
   e.target.src = defaultAvatar;
@@ -54,17 +54,33 @@ function scrollToTop() {
 // Dark mode toggle using Vuetify theme
 const theme = useTheme();
 const isDark = computed(() => theme.global.current.value.dark);
+
+// Helper: get current theme name
+function getThemeName() {
+  return theme.global.name.value;
+}
+
+// Persist dark mode preference in localStorage and always use correct theme names
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme && savedTheme !== getThemeName()) {
+    theme.global.name.value = savedTheme;
+  }
+});
 function toggleDark() {
-  theme.global.name.value = isDark.value ? 'light' : 'dark';
-  document.body.classList.toggle('dark', !isDark.value);
+  // Always toggle between 'lightCustom' and 'darkCustom'
+  const current = getThemeName();
+  const newTheme = current === 'darkCustom' ? 'lightCustom' : 'darkCustom';
+  theme.global.name.value = newTheme;
+  localStorage.setItem('theme', newTheme);
 }
 
 // Social/contact icons for quick access
 const socials = [
-  { icon: 'mdi-linkedin', url: 'https://linkedin.com/in/srisri-tummu' },
-  { icon: 'mdi-github', url: 'https://github.com/srisritummu' },
+  { icon: 'mdi-linkedin', url: 'https://linkedin.com/in/srisri-t' },
+  { icon: 'mdi-github', url: 'https://github.com/srisri.tummu' },
   { icon: 'mdi-email', url: 'mailto:srisri.tummu@email.com' },
-  { icon: 'mdi-phone', url: 'tel:+919999999999' },
+  { icon: 'mdi-phone', url: 'tel:+91 9493034647' },
 ];
 
 // Testimonials carousel data and logic
@@ -144,24 +160,24 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
   <v-app>
     <v-main>
       <div class="global-dark-toggle-wrapper">
-        <v-btn icon class="global-dark-toggle" @click="toggleDark">
-          <v-icon :color="isDark ? '#fff' : 'primary'" size="32">
+        <v-btn icon class="global-dark-toggle" @click="toggleDark" aria-label="Toggle dark mode" role="button">
+          <v-icon :color="isDark ? '#fff' : 'primary'" size="32" aria-label="Theme icon" role="img">
             {{ isDark ? 'mdi-white-balance-sunny' : 'mdi-moon-waning-crescent' }}
           </v-icon>
         </v-btn>
       </div>
       <!-- Hero Section: Profile, counters, resume, social links -->
-      <HeroSection
+      <HeroCard
         :profilePhotoUrl="profilePhotoUrl"
-        :defaultAvatar="defaultAvatar"
+        :onImgError="onImgError"
+        name="Sri Sri Tummu"
+        title="QA Lead | Automation Specialist | Mentor"
+        description="Transforming ideas into realities, creating interfaces that inspire and engage users dreams."
         :expYears="expYears"
         :projects="projects"
         :clients="clients"
         :socials="socials"
-        :isDark="isDark"
-        :toggleDark="toggleDark"
         :resumeUrl="resumeUrl"
-        :onImgError="onImgError"
       />
 
       <!-- What do I help? -->
@@ -248,7 +264,7 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
       </footer>
       <!-- Scroll to Top Button -->
       <transition name="fade">
-        <v-btn v-if="showScrollTop" class="scroll-top-btn" color="primary" icon @click="scrollToTop">
+        <v-btn v-if="showScrollTop" class="scroll-top-btn" color="primary" icon @click="scrollToTop" aria-label="Scroll to top" tabindex="0" role="button">
           <v-icon>mdi-arrow-up</v-icon>
         </v-btn>
       </transition>
@@ -261,72 +277,118 @@ const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf';
   Custom styles for layout, theming, and responsive design.
   Use clear class names and comments for maintainability.
 */
+
+/* --- Light Mode: Rich Yellow Background, No Gradient --- */
 body, #app, .v-application {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  font-size: 1.15rem; /* Increased base font size */
-  /* Modern gradient: deep blue to teal to light yellow */
-  background: linear-gradient(135deg, #232b36 0%, #43cea2 60%, #f9f871 100%);
+  font-size: 1.15rem;
+  color: #185a9d;
+  background: #ffe066; /* Rich yellow, no gradient */
 }
-body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
-  background: linear-gradient(135deg, #181818 0%, #232b36 60%, #43cea2 100%) !important;
+.main-card, .details-section, .testimonial-card, .hero-section {
+  background: #fffbe6; /* Soft off-white for contrast on yellow */
+  color: #185a9d;
+  border: 1.5px solid #185a9d;
+  box-shadow: 0 4px 24px rgba(24,90,157,0.10), 0 2px 12px rgba(249,248,113,0.08);
 }
-.main-bg {
-  background: transparent;
-  min-height: 100vh;
-  padding-bottom: 40px;
-  transition: background 0.3s;
+.hero-title, .details-section .section-title {
+  color: #185a9d;
+  background: none;
 }
-.main-bg.dark {
-  background: transparent;
+.counter .count, .resume-btn, .testimonial-title {
+  color: #f9c846;
 }
-.main-card {
-  position: relative;
-  background: #fffdfa !important; /* Soft off-white for cards */
+.resume-btn {
+  background: #185a9d;
+  color: #fff;
+}
+.resume-btn:hover {
+  background: #ffe066;
+  color: #185a9d;
+}
+.social-link {
+  background: #185a9d;
+  color: #fff;
+  transition: background 0.2s, color 0.2s;
+}
+.social-link:hover {
+  background: #ffe066;
+  color: #185a9d;
+}
+.site-footer {
+  color: #185a9d;
+}
+.site-footer a {
   color: #232b36;
-  border: 1.5px solid #e0e7ef;
-  box-shadow: 0 4px 24px rgba(67,206,162,0.08);
-  max-width: 850px; /* Increased from 770px */
-  font-size: 1.08rem; /* Slightly larger text in cards */
-}
-.main-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: 18px;
-  background: linear-gradient(120deg, #e3f2fd 0%, #f9f871 100%);
-  opacity: 0.32;
-  pointer-events: none;
-}
-.main-card::after {
-  content: '';
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  right: 8px;
-  bottom: 8px;
-  border-radius: 14px;
-  z-index: 0;
-  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
-  opacity: 0.10;
-  pointer-events: none;
-}
-.main-card > * {
-  position: relative;
-  z-index: 1;
-}
-.v-application.theme--dark .main-card,
-.v-application--is-lt-dark .main-card {
-  background: #232b36 !important; /* Deep blue for cards in dark mode */
-  color: #f9f871 !important;
-  border: 1.5px solid #43cea2;
-  box-shadow: 0 4px 24px rgba(67, 206, 162, 0.18);
 }
 
-/* --- Glassmorphism Effect for Cards & Hero --- */
-.main-card, .details-section, .testimonial-card, .hero-section {
+/* --- Dark Mode: Navy Blue, Deep Black, White Text --- */
+.v-application.theme--dark, .v-application--is-lt-dark, body.dark, #app.dark {
+  color: #fff;
+  background: #10131a; /* Deep black/navy */
+}
+.v-application.theme--dark .main-card,
+.v-application.theme--dark .details-section,
+.v-application.theme--dark .testimonial-card,
+.v-application.theme--dark .hero-section,
+.v-application--is-lt-dark .main-card,
+.v-application--is-lt-dark .details-section,
+.v-application--is-lt-dark .testimonial-card,
+.v-application--is-lt-dark .hero-section {
+  background: #18213a; /* Rich navy blue */
+  color: #fff;
+  border: 1.5px solid #fff;
+  box-shadow: 0 4px 24px rgba(24,90,157,0.18);
+}
+.v-application.theme--dark .hero-title,
+.v-application.theme--dark .details-section .section-title,
+.v-application--is-lt-dark .hero-title,
+.v-application--is-lt-dark .details-section .section-title {
+  color: #fff;
+  background: none;
+}
+.v-application.theme--dark .counter .count,
+.v-application.theme--dark .resume-btn,
+.v-application.theme--dark .testimonial-title,
+.v-application--is-lt-dark .counter .count,
+.v-application--is-lt-dark .resume-btn,
+.v-application--is-lt-dark .testimonial-title {
+  color: #43cea2;
+}
+.v-application.theme--dark .resume-btn,
+.v-application--is-lt-dark .resume-btn {
+  background: #fff;
+  color: #18213a;
+}
+.v-application.theme--dark .resume-btn:hover,
+.v-application--is-lt-dark .resume-btn:hover {
+  background: #232b36;
+  color: #fff;
+}
+.v-application.theme--dark .social-link,
+.v-application--is-lt-dark .social-link {
+  background: #fff;
+  color: #18213a;
+}
+.v-application.theme--dark .social-link:hover,
+.v-application--is-lt-dark .social-link:hover {
+  background: #232b36;
+  color: #fff;
+}
+.v-application.theme--dark .site-footer,
+.v-application--is-lt-dark .site-footer {
+  color: #fff;
+}
+.v-application.theme--dark .site-footer a,
+.v-application--is-lt-dark .site-footer a {
+  color: #fff;
+}
+
+/* --- Remove conflicting glassmorphism and legacy backgrounds for .details-section and .testimonial-card --- */
+/* Remove this block to prevent override and disappearance */
+/* .main-card, .details-section, .testimonial-card, .hero-section {
   backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
   background: rgba(255, 255, 255, 0.55) !important;
@@ -340,16 +402,40 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   background: rgba(35, 43, 54, 0.65) !important;
   box-shadow: 0 8px 40px 0 rgba(67,206,162,0.22), 0 2px 12px rgba(36,36,122,0.13);
   border: 1.5px solid rgba(67,206,162,0.32);
-}
+} */
 
 /* --- Parallax Effect for Hero Section --- */
 .hero-section {
-  background-attachment: fixed;
+  background: linear-gradient(120deg, #fffdfa 0%, #f6f5f2 60%, #f7e7c4 100%);
+  color: #232b36;
+  border-radius: 48px 48px 120px 120px;
+  box-shadow: 0 8px 32px rgba(67,206,162,0.10), 0 2px 12px rgba(36, 36, 122, 0.06);
+  padding: 64px 0 56px 0;
+  max-width: 720px;
+  width: 100%;
+  margin: 48px auto 56px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s, background 0.3s;
+  border: 1.5px solid #ece9e6;
 }
 @media (max-width: 700px) {
   .hero-section {
     background-attachment: scroll;
+    padding: 18px 0 8px 0;
+    max-width: 99vw;
+    border-radius: 20px 20px 60px 60px;
   }
+}
+.v-application.theme--dark .hero-section,
+.v-application--is-lt-dark .hero-section {
+  background: linear-gradient(120deg, #232b36 0%, #232b36 60%, #2d2d2d 100%);
+  color: #ffe082;
+  border: 1.5px solid #3a3a3a;
 }
 
 /* --- Micro-interactions: Button & Chip Animations --- */
@@ -392,141 +478,122 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
 .sri-sri {
   color: #185a9d !important;
 }
-.hero-section {
-  background: linear-gradient(120deg, #f9f871 0%, #43cea2 60%, #185a9d 100%);
-  color: #232b36;
-  border-radius: 48px 48px 120px 120px;
-  box-shadow: 0 12px 48px rgba(67,206,162,0.22), 0 4px 32px rgba(36, 36, 122, 0.13);
-  padding: 64px 0 56px 0;
-  max-width: 720px;
-  width: 100%;
-  margin: 48px auto 56px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+
+/* --- Section Card Spacing & Alignment --- */
+.details-section, .testimonial-card {
   position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.3s, background 0.3s;
-  border: 2.5px solid #e3f2fd;
-}
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: -100px;
-  left: -100px;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, #fffdfa 0%, #f9f871 60%, transparent 100%);
-  opacity: 0.18;
-  z-index: 0;
-}
-.hero-section::after {
-  content: '';
-  position: absolute;
-  bottom: -80px;
-  right: -80px;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, #43cea2 0%, #185a9d 80%, transparent 100%);
-  opacity: 0.15;
-  z-index: 0;
-}
-.hero-avatar {
-  margin-bottom: 28px;
-  border: 7px solid #fffdfa;
-  box-shadow: 0 8px 32px rgba(67,206,162,0.22);
-  border-radius: 50%;
-  width: 148px;
-  height: 148px;
-  object-fit: cover;
-  background: #fffdfa;
-  transition: box-shadow 0.3s;
-}
-.hero-title {
-  font-size: 3.2rem;
-  font-weight: 900;
-  margin-bottom: 12px;
-  letter-spacing: -2px;
-  text-align: center;
-  background: linear-gradient(90deg, #185a9d 0%, #43cea2 60%, #f9f871 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  /* Remove background here to prevent override */
+  background: unset;
+  border-radius: 32px;
+  box-shadow: 0 4px 24px rgba(67,206,162,0.10), 0 2px 12px rgba(36,36,122,0.06);
+  padding: 32px 28px 24px 28px; /* Slightly reduced for balance */
+  margin: 32px auto 0 auto; /* Consistent top margin, no double spacing */
+  max-width: 760px;
   width: 100%;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  text-shadow: 0 4px 16px rgba(67,206,162,0.13);
-}
-.hero-subtitle {
-  font-size: 1.22rem;
-  color: #185a9d;
-  margin-bottom: 36px;
-  text-align: center;
-  font-weight: 700;
-  width: 100%;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  letter-spacing: 0.3px;
-  text-shadow: 0 2px 8px #fffdfa44;
-}
-.hero-counters {
-  width: 100%;
-  max-width: 700px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch;
-  gap: 32px;
-  margin-bottom: 36px;
-}
-.counter {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.15rem;
-  background: rgba(255,255,255,0.22);
-  border-radius: 20px;
-  padding: 18px 28px;
-  box-shadow: 0 4px 18px rgba(67,206,162,0.13);
-  min-width: 120px;
-  min-height: 100px;
-  transition: background 0.2s;
+  color: #232b36;
   border: 1.5px solid #e3f2fd;
+  transition: box-shadow 0.3s, background 0.3s, color 0.3s;
+  overflow: hidden;
 }
-.counter .count {
-  font-size: 2.6rem;
-  font-weight: 900;
+.details-section::before, .testimonial-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  opacity: 0.18;
+  pointer-events: none;
+}
+.details-section > *, .testimonial-card > * {
+  position: relative;
+  z-index: 1;
+}
+.v-application.theme--dark .details-section,
+.v-application.theme--dark .testimonial-card,
+.v-application--is-lt-dark .details-section,
+.v-application--is-lt-dark .testimonial-card {
+  background: unset;
+  color: #f9f871;
+  border: 1.5px solid #43cea2;
+}
+
+/* --- Footer Spacing & Readability --- */
+.site-footer {
+  margin: 48px auto 0 auto;
+  padding: 18px 0 8px 0;
+  text-align: center;
+  font-size: 1.05rem;
+  color: #185a9d; /* Changed from #185a9d to #232b36 for better contrast */
+  opacity: 0.92;
+}
+.v-application.theme--dark .site-footer,
+.v-application--is-lt-dark .site-footer {
+  color: #ffe082; /* Changed from #f9f871 to #ffe082 for better dark contrast */
+  opacity: 0.82;
+}
+
+/* --- Section Divider Spacing --- */
+.section-divider {
+  margin: 40px auto 0 auto;
+  max-width: 760px;
+  border: none;
+  border-top: 1.5px solid #e3f2fd;
+  opacity: 0.7;
+}
+.v-application.theme--dark .section-divider,
+.v-application--is-lt-dark .section-divider {
+  border-top: 1.5px solid #43cea2;
+  opacity: 0.5;
+}
+
+/* --- Headings & Font Consistency --- */
+.details-section .section-title,
+.hero-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  margin-bottom: 12px;
   color: #185a9d;
-  margin: 4px 0 2px 0;
-  transition: color 0.3s;
-  text-shadow: 0 2px 8px #f9f87144;
+  letter-spacing: -1px;
+  text-align: center;
 }
-.counter .label {
+.v-application.theme--dark .details-section .section-title,
+.v-application.theme--dark .hero-title,
+.v-application--is-lt-dark .details-section .section-title,
+.v-application--is-lt-dark .hero-title {
+  color: #f9f871;
+}
+
+.details-section ul, .details-section ol {
+  margin: 0 0 0 1.2em;
+  padding: 0;
   font-size: 1.08rem;
   color: #232b36;
-  opacity: 0.85;
 }
-.counter .expert {
-  font-size: 1.02rem;
-  color: #43cea2;
-  font-weight: 700;
-  margin-top: 2px;
-  letter-spacing: 0.5px;
+.v-application.theme--dark .details-section ul,
+.v-application.theme--dark .details-section ol,
+.v-application--is-lt-dark .details-section ul,
+.v-application--is-lt-dark .details-section ol {
+  color: #f9f871;
 }
+
+/* --- Responsive Adjustments --- */
 @media (max-width: 700px) {
-  .hero-counters {
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
+  .details-section, .testimonial-card {
+    padding: 14px 3vw 10px 3vw;
+    margin: 18px auto 0 auto;
+    max-width: 99vw;
+    border-radius: 14px;
   }
-  .counter {
-    min-width: 90vw;
-    min-height: 60px;
-    padding: 10px 0;
+  .section-divider {
+    margin: 24px auto 0 auto;
+    max-width: 99vw;
+  }
+  .details-section .section-title,
+  .hero-title {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
   }
 }
 
@@ -573,7 +640,7 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
 }
 .social-link {
   color: #fff;
-  background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+  background: linear-gradient(135deg, #185a9d 0%, #f9f871 100%);
   border-radius: 50%;
   width: 54px;
   height: 54px;
@@ -585,54 +652,49 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 .social-link:hover {
-  background: linear-gradient(135deg, #f9f871 0%, #43cea2 100%);
+  background: linear-gradient(135deg, #f9f871 0%, #185a9d 100%);
   color: #185a9d;
   transform: scale(1.18);
 }
 
-/* --- Modern Section Card Styles --- */
-.details-section {
-  background: linear-gradient(120deg, #fffdfa 0%, #e3f2fd 100%);
+/* --- Modern Section Card Styles (Optimized for Consistent Dark/Light Mode) --- */
+.details-section, .testimonial-card {
+  position: relative;
+  /* Remove background here to prevent override */
+  background: unset;
   border-radius: 32px;
   box-shadow: 0 4px 24px rgba(67,206,162,0.10), 0 2px 12px rgba(36,36,122,0.06);
-  padding: 36px 36px 28px 36px;
-  margin: 36px auto 36px auto;
-  max-width: 780px;
+  padding: 32px 28px 24px 28px; /* Slightly reduced for balance */
+  margin: 32px auto 0 auto; /* Consistent top margin, no double spacing */
+  max-width: 760px;
   width: 100%;
   color: #232b36;
-  position: relative;
-  transition: box-shadow 0.3s, background 0.3s;
   border: 1.5px solid #e3f2fd;
+  transition: box-shadow 0.3s, background 0.3s, color 0.3s;
+  overflow: hidden;
 }
-.details-section:hover {
-  box-shadow: 0 8px 36px rgba(67,206,162,0.16), 0 4px 24px rgba(36,36,122,0.10);
-  background: linear-gradient(120deg, #e3f2fd 0%, #fffdfa 100%);
+.details-section::before, .testimonial-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  opacity: 0.18;
+  pointer-events: none;
 }
-.details-section .section-title {
-  display: flex;
-  align-items: center;
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: #185a9d;
-  margin-bottom: 18px;
-  letter-spacing: -0.5px;
+.details-section > *, .testimonial-card > * {
+  position: relative;
+  z-index: 1;
 }
-.details-section .section-title .v-icon {
-  margin-right: 12px;
-  color: #43cea2;
-  font-size: 2rem;
-}
-.details-section ul, .details-section p {
-  font-size: 1.13rem;
-  color: #232b36;
-  margin: 0 0 8px 0;
-  line-height: 1.7;
-}
-.details-section ul {
-  padding-left: 22px;
-}
-.details-section li {
-  margin-bottom: 6px;
+.v-application.theme--dark .details-section,
+.v-application.theme--dark .testimonial-card,
+.v-application--is-lt-dark .details-section,
+.v-application--is-lt-dark .testimonial-card {
+  background: unset;
+  color: #f9f871;
+  border: 1.5px solid #43cea2;
 }
 
 /* --- Tech Stack & Hobbies --- */
@@ -657,16 +719,16 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .tech-item .v-icon, .hobby-item .v-icon {
-  color: #43cea2;
+  color: #185a9d;
   font-size: 1.4rem;
 }
 .tech-item:hover, .hobby-item:hover {
-  background: #43cea2;
+  background: #185a9d;
   color: #fff;
   box-shadow: 0 4px 16px rgba(67,206,162,0.16);
 }
 .tech-item:hover .v-icon, .hobby-item:hover .v-icon {
-  color: #fffdfa;
+  color: #fff !important;
 }
 
 /* --- Testimonials --- */
@@ -682,6 +744,9 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   border: 1.5px solid #e3f2fd;
   text-align: center;
   position: relative;
+  background: linear-gradient(120deg, #fffdfa 0%, #e3f2fd 60%, #e0c3fc 100%, #8ec5fc 100%),
+              linear-gradient(120deg, rgba(164, 120, 255, 0.18) 0%, rgba(142,197,252,0.13) 100%);
+  background-blend-mode: lighten, normal;
 }
 .testimonial-carousel {
   display: flex;
@@ -709,8 +774,8 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
   color: #232b36;
 }
 .testimonial-title {
+  color: #185a9d;
   font-weight: 500;
-  color: #43cea2;
   font-size: 1.05rem;
 }
 .testimonial-controls {
@@ -727,17 +792,6 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
 }
 .testimonial-controls .v-btn:hover {
   background: #185a9d;
-  color: #f9f871;
-}
-
-/* --- Upgraded Section Card Gradient Backgrounds --- */
-.details-section, .testimonial-card {
-  background: linear-gradient(120deg, #f9f871 0%, #43cea2 60%, #185a9d 100%) !important;
-  color: #232b36;
-}
-.v-application.theme--dark .details-section,
-.v-application.theme--dark .testimonial-card {
-  background: linear-gradient(120deg, #232b36 0%, #185a9d 60%, #43cea2 100%) !important;
   color: #f9f871;
 }
 
@@ -767,20 +821,19 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
     font-size: 1.1rem;
   }
   .details-section, .testimonial-card {
-    padding: 18px 6vw 14px 6vw;
-    border-radius: 18px;
+    padding: 14px 3vw 10px 3vw;
+    margin: 18px auto 0 auto;
+    max-width: 99vw;
+    border-radius: 14px;
+  }
+  .section-divider {
+    margin: 24px auto 0 auto;
     max-width: 99vw;
   }
-  .tech-stack, .hobbies-list {
-    gap: 8px 4px;
-  }
-  .tech-item, .hobby-item {
-    font-size: 0.98rem;
-    padding: 6px 10px;
-  }
-  .testimonial-avatar {
-    width: 48px;
-    height: 48px;
+  .details-section .section-title,
+  .hero-title {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
   }
 }
 
@@ -795,17 +848,17 @@ body.dark, #app.dark, .v-application.theme--dark, .v-application--is-lt-dark {
 .global-dark-toggle:hover {
   background: rgba(67,206,162,0.18) !important;
 }
+.global-dark-toggle-wrapper {
+  position: fixed;
+  top: 32px;
+  right: 24px;
+  z-index: 1000;
+  pointer-events: none;
+}
 @media (max-width: 700px) {
   .global-dark-toggle-wrapper {
     top: 10px;
     right: 10px;
   }
-}
-.global-dark-toggle-wrapper {
-  position: absolute;
-  top: 32px;
-  right: 10px;
-  z-index: 1000;
-  pointer-events: none;
 }
 </style>

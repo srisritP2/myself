@@ -7,6 +7,9 @@
 */
 
 :root {
+  --gradient: linear-gradient(45deg, #ff7c7d, #ffda67);
+  --card: #272524;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
