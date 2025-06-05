@@ -1,7 +1,7 @@
 <template>
   <v-card class="main-card animate-section">
     <v-card-title>
-      <v-icon left color="primary">{{ icon }}</v-icon> {{ title }}
+      <v-icon left color="info">{{ icon }}</v-icon> {{ title }}
     </v-card-title>
     <v-card-text>
       <slot />

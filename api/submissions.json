@@ -1,0 +1,18 @@
+[
+  {
+    "firstName": "SRISRI",
+    "lastName": "T",
+    "email": "srisri.tummu@gmail.com",
+    "resumeHeader": "QA LEAD",
+    "skills": "JAVA,SELENIUM",
+    "submittedAt": "2025-06-05T09:10:27.364Z"
+  },
+  {
+    "firstName": "test",
+    "lastName": "test",
+    "email": "test@gmail.com",
+    "resumeHeader": "test header",
+    "skills": "testskill1,skill2",
+    "submittedAt": "2025-06-05T10:42:43.061Z"
+  }
+]
