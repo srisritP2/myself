@@ -27,7 +27,7 @@
         <v-icon left>mdi-download</v-icon>Download Resume
       </v-btn>
       <div class="socials">
-        <button v-for="social in socials" :key="social.icon" @click="openSocial(social.url)" :aria-label="`Link to ${social.icon.replace('mdi-','')}`">
+        <button v-for="social in socials" :key="social.icon" @click="openSocial(social.url, social.icon)" :aria-label="`Link to ${social.icon.replace('mdi-','')}`">
           <v-icon :color="social.color || 'primary'" size="32">{{ social.icon }}</v-icon>
         </button>
       </div>
@@ -48,8 +48,14 @@ const props = defineProps({
   socials: Array,
   resumeUrl: String
 });
-function openSocial(url) {
-  window.open(url, '_blank', 'noopener');
+function openSocial(url, icon) {
+  if (icon === 'mdi-email') {
+    window.location.href = `mailto:${url.replace('mailto:', '')}`;
+  } else if (icon === 'mdi-phone') {
+    window.location.href = `tel:${url.replace('tel:', '')}`;
+  } else {
+    window.open(url, '_blank', 'noopener');
+  }
 }
 </script>
 
