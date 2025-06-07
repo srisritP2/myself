@@ -1,0 +1,97 @@
+Technical Setup & Commands for SaaS Portfolio Project
+====================================================
+
+1. Prerequisites & Software Requirements
+----------------------------------------
+- Node.js (v16+ recommended): https://nodejs.org/
+- npm (comes with Node.js)
+- Git: https://git-scm.com/
+- VS Code (recommended): https://code.visualstudio.com/
+- Vue CLI (optional): npm install -g @vue/cli
+- Vuetify (Vue UI library)
+- Vite (modern build tool, used by default in Vue 3 projects)
+
+2. Project Setup Commands
+-------------------------
+
+a. Clone or Initialize the Project
+- If starting from scratch:
+  git init
+- If cloning from GitHub:
+  git clone https://github.com/srisritP2/myself.git
+  cd myself
+
+b. Install Dependencies
+- If you have a package.json:
+  npm install
+- If you need to create a new Vue 3 + Vite project:
+  npm create vite@latest
+  # Follow prompts: select Vue, then Vue 3
+  cd <project-folder>
+  npm install
+
+c. Install Vuetify
+  npm install vuetify
+  npm install @mdi/font
+
+d. (Optional) Install Other Useful Packages
+- Axios (for HTTP requests): npm install axios
+- Vee-validate (for form validation): npm install vee-validate yup
+- dotenv (for environment variables): npm install dotenv
+
+3. Development Workflow
+-----------------------
+
+a. Start the Development Server
+  npm run dev
+# or (if using Vue CLI)
+  npm run serve
+
+b. Version Control
+  git add .
+  git commit -m "Initial commit"
+  git remote add origin https://github.com/srisritP2/myself.git
+  git push -u origin main
+
+c. Iterative Development
+- Modularize components (src/components/)
+- Add and style new sections (Work Experience, Tech Stack, Testimonials, etc.)
+- Implement and connect backend API (api/submit.js)
+- Add form validation and spam protection
+- Refine UI/UX, accessibility, and responsiveness
+- Test all features locally
+
+d. Build for Production
+  npm run build
+
+e. Deploy (e.g., GitHub Pages)
+- Build the project: npm run build
+- Deploy the dist/ folder to the gh-pages branch (can use gh-pages npm package or manual copy)
+
+4. Additional Tools/Extensions
+------------------------------
+- VS Code Extensions:
+  - Vetur or Volar (Vue tooling)
+  - ESLint
+  - Prettier
+  - GitLens
+
+5. Backend/API (if using Node.js)
+----------------------------------
+- Node.js is required to run the backend API (api/submit.js).
+- No separate server install needed if using Vite’s dev server for API routes.
+
+6. Summary of What Was Done
+----------------------------
+- Set up Vue 3 + Vite + Vuetify project
+- Modularized all UI into components
+- Added premium, accessible, and responsive design
+- Implemented user details form and backend API
+- Connected frontend and backend for submissions
+- Added LinkedIn-style Work Experience section
+- Polished all cards and sections for SaaS/productization
+- Set up git and resolved push/deployment issues
+
+---
+
+You can copy this content into a Word document for your records or team. If you need a .docx file or want to include screenshots/diagrams, let me know!

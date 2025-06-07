@@ -258,6 +258,9 @@ body {
   .card.hero-card {
     padding: 16px 2vw 16px 2vw;
     border-radius: 12px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .socials {
@@ -282,6 +285,15 @@ body {
   .counter {
     font-size: 0.98rem;
     gap: 3px;
+  }
+  .card.hero-card img {
+    margin: 0 0 16px 0;
+    width: 60vw;
+    max-width: 220px;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
   }
 }
 @media (max-width: 400px) {
