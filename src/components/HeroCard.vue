@@ -31,6 +31,10 @@
           <v-icon :color="social.color || 'primary'" size="32">{{ social.icon }}</v-icon>
         </button>
       </div>
+      <!-- Bouncing Down Arrow Icon -->
+      <div class="bouncing-arrow">
+        <v-icon color="primary" size="40">mdi-chevron-down</v-icon>
+      </div>
     </div>
   </div>
 </template>
@@ -241,6 +245,28 @@ body {
   font-weight: 500;
   margin: 0 10px;
   user-select: none;
+}
+
+.bouncing-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  animation: bounce 1.4s infinite;
+}
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(10px);
+  }
 }
 
 @media (max-width: 900px) {
