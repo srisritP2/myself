@@ -68,7 +68,9 @@
     - _Requirements: 2.3_
 
 - [ ] 5. Refactor App.vue into modular components
-  - [ ] 5.1 Extract HeroSection from App.vue
+  - [x] 5.1 Extract HeroSection from App.vue
+
+
     - Move hero section logic to dedicated component
     - Implement lazy image loading with error handling
     - Add animated counters with proper accessibility
