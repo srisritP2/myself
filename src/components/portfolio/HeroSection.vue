@@ -614,16 +614,135 @@ function getSocialLabel(icon) {
   }
 }
 
-/* ===== THEME-SPECIFIC ENHANCEMENTS ===== */
+/* ===== CREATIVE GRADIENT THEME ===== */
 :root[data-theme='creative-gradient'] .hero-section {
-  background: var(--bg-gradient, var(--bg-primary));
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-:root[data-theme='creative-gradient'] .name-primary {
-  background: var(--gradient-primary);
+:root[data-theme='creative-gradient'] .hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.8) 0%,
+    rgba(118, 75, 162, 0.9) 50%,
+    rgba(102, 126, 234, 0.7) 100%
+  );
+  z-index: 0;
+}
+
+:root[data-theme='creative-gradient'] .hero-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Glass Morphism Profile Card */
+:root[data-theme='creative-gradient'] .profile-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: var(--space-6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme='creative-gradient'] .profile-image-wrapper {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Glass Morphism Stats */
+:root[data-theme='creative-gradient'] .stat-item {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: var(--space-2) var(--space-3);
+  min-width: 60px;
+}
+
+:root[data-theme='creative-gradient'] .stat-number {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme='creative-gradient'] .stat-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Content Styling */
+:root[data-theme='creative-gradient'] .hero-name {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+:root[data-theme='creative-gradient'] .hero-title {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme='creative-gradient'] .hero-description {
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Glass Morphism Buttons */
+:root[data-theme='creative-gradient'] .hero-btn {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme='creative-gradient'] .hero-btn--primary {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+:root[data-theme='creative-gradient'] .hero-btn--primary:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme='creative-gradient'] .hero-btn--secondary {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+:root[data-theme='creative-gradient'] .hero-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Glass Morphism Social Buttons */
+:root[data-theme='creative-gradient'] .social-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme='creative-gradient'] .social-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* ===== DARK MODE ENHANCEMENTS ===== */
