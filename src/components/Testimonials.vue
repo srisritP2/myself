@@ -1,23 +1,57 @@
 <template>
   <div class="testimonials-section">
     <div class="section-header">
-      <div class="section-icon">
-        <v-icon color="primary" size="32">mdi-comment-quote</v-icon>
+      <div class="section-icon" :class="{ 'animate-pulse': enableAnimations }">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M14,17H7L2,22V4A2,2 0 0,1 4,2H20A2,2 0 0,1 22,4V15A2,2 0 0,1 20,17H16L14,19V17Z"
+            fill="currentColor"
+          />
+        </svg>
       </div>
       <h2 class="section-title">What People Say</h2>
       <p class="section-subtitle">Testimonials from colleagues and clients</p>
     </div>
 
-    <div class="testimonials-carousel">
+    <div
+      class="testimonials-carousel"
+      :class="{ 'animate-in': enableAnimations }"
+      @touchstart="handleTouchStart"
+      @touchend="handleTouchEnd"
+    >
       <div class="carousel-container">
         <!-- Main Testimonial Display -->
-        <div class="testimonial-main" :key="testimonialIndex">
-          <div class="quote-icon">
-            <v-icon color="primary" size="48">mdi-format-quote-open</v-icon>
+        <div
+          class="testimonial-main"
+          :key="testimonialIndex"
+          :class="{ 'slide-in': enableAnimations }"
+        >
+          <div class="quote-decoration">
+            <svg
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14,17H7L2,22V4A2,2 0 0,1 4,2H20A2,2 0 0,1 22,4V15A2,2 0 0,1 20,17H16L14,19V17Z"
+                fill="currentColor"
+                opacity="0.1"
+              />
+            </svg>
           </div>
 
           <div class="testimonial-content">
-            <p class="testimonial-text">{{ currentTestimonial.text }}</p>
+            <blockquote class="testimonial-text">
+              {{ currentTestimonial.text }}
+            </blockquote>
 
             <div class="testimonial-author">
               <div class="author-avatar">
@@ -25,25 +59,57 @@
                   :src="currentTestimonial.avatar"
                   :alt="currentTestimonial.name"
                   @error="handleAvatarError"
+                  loading="lazy"
                 />
+                <div class="avatar-ring"></div>
               </div>
               <div class="author-info">
                 <h4 class="author-name">{{ currentTestimonial.name }}</h4>
                 <p class="author-title">{{ currentTestimonial.title }}</p>
+                <div class="author-rating">
+                  <div class="stars">
+                    <svg
+                      v-for="n in 5"
+                      :key="n"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.46,13.97L5.82,21L12,17.27Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Navigation Controls -->
+        <!-- Enhanced Navigation Controls -->
         <div class="carousel-controls">
           <button
             class="control-btn control-btn--prev"
             @click="prevTestimonial"
             :disabled="testimonials.length <= 1"
             aria-label="Previous testimonial"
+            :class="{ pulse: isAutoPlaying && !isPaused }"
           >
-            <v-icon>mdi-chevron-left</v-icon>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
+                fill="currentColor"
+              />
+            </svg>
           </button>
 
           <div class="carousel-indicators">
@@ -51,10 +117,18 @@
               v-for="(_, index) in testimonials"
               :key="index"
               class="indicator"
-              :class="{ active: index === testimonialIndex }"
+              :class="{
+                active: index === testimonialIndex,
+                'animate-scale': enableAnimations && index === testimonialIndex,
+              }"
               @click="goToTestimonial(index)"
               :aria-label="`Go to testimonial ${index + 1}`"
-            ></button>
+            >
+              <div
+                class="indicator-progress"
+                v-if="index === testimonialIndex && isAutoPlaying && !isPaused"
+              ></div>
+            </button>
           </div>
 
           <button
@@ -62,23 +136,88 @@
             @click="nextTestimonial"
             :disabled="testimonials.length <= 1"
             aria-label="Next testimonial"
+            :class="{ pulse: isAutoPlaying && !isPaused }"
           >
-            <v-icon>mdi-chevron-right</v-icon>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Auto-play Controls -->
+        <div class="autoplay-controls">
+          <button
+            class="autoplay-btn"
+            @click="toggleAutoPlay"
+            :aria-label="isAutoPlaying ? 'Pause slideshow' : 'Play slideshow'"
+          >
+            <svg
+              v-if="!isAutoPlaying"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M8,5.14V19.14L19,12.14L8,5.14Z" fill="currentColor" />
+            </svg>
+            <svg
+              v-else
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M14,19H18V5H14M6,19H10V5H6V19Z" fill="currentColor" />
+            </svg>
+            <span class="autoplay-text">{{ isAutoPlaying ? 'Pause' : 'Play' }}</span>
           </button>
         </div>
       </div>
 
-      <!-- Testimonial Thumbnails -->
+      <!-- Enhanced Testimonial Thumbnails -->
       <div class="testimonial-thumbnails">
         <div
           v-for="(testimonial, index) in testimonials"
           :key="index"
           class="thumbnail"
-          :class="{ active: index === testimonialIndex }"
+          :class="{
+            active: index === testimonialIndex,
+            'animate-in': enableAnimations,
+          }"
+          :style="{ animationDelay: `${index * 0.1}s` }"
           @click="goToTestimonial(index)"
+          @mouseenter="pauseAutoPlay"
+          @mouseleave="resumeAutoPlay"
         >
           <div class="thumbnail-avatar">
-            <img :src="testimonial.avatar" :alt="testimonial.name" @error="handleAvatarError" />
+            <img
+              :src="testimonial.avatar"
+              :alt="testimonial.name"
+              @error="handleAvatarError"
+              loading="lazy"
+            />
+            <div class="thumbnail-overlay">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M8,5.14V19.14L19,12.14L8,5.14Z" fill="currentColor" />
+              </svg>
+            </div>
           </div>
           <div class="thumbnail-info">
             <span class="thumbnail-name">{{ testimonial.name }}</span>
@@ -91,7 +230,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   testimonials: {
@@ -116,11 +255,23 @@ const props = defineProps({
   },
 })
 
+// Auto-play functionality
+const isAutoPlaying = ref(false)
+const isPaused = ref(false)
+const autoPlayInterval = ref(null)
+const autoPlayDelay = 5000 // 5 seconds
+
 const currentTestimonial = computed(() => {
   return props.testimonials[props.testimonialIndex] || props.testimonials[0]
 })
 
 function goToTestimonial(index) {
+  // Stop auto-play temporarily when user manually navigates
+  if (isAutoPlaying.value) {
+    pauseAutoPlay()
+    setTimeout(() => resumeAutoPlay(), 2000) // Resume after 2 seconds
+  }
+
   // Calculate how many steps to move
   const currentIndex = props.testimonialIndex
   const targetIndex = index
@@ -137,9 +288,123 @@ function goToTestimonial(index) {
   }
 }
 
+function toggleAutoPlay() {
+  if (isAutoPlaying.value) {
+    stopAutoPlay()
+  } else {
+    startAutoPlay()
+  }
+}
+
+function startAutoPlay() {
+  if (props.testimonials.length <= 1) return
+
+  isAutoPlaying.value = true
+  isPaused.value = false
+
+  autoPlayInterval.value = setInterval(() => {
+    if (!isPaused.value) {
+      props.nextTestimonial()
+    }
+  }, autoPlayDelay)
+}
+
+function stopAutoPlay() {
+  isAutoPlaying.value = false
+  isPaused.value = false
+
+  if (autoPlayInterval.value) {
+    clearInterval(autoPlayInterval.value)
+    autoPlayInterval.value = null
+  }
+}
+
+function pauseAutoPlay() {
+  isPaused.value = true
+}
+
+function resumeAutoPlay() {
+  if (isAutoPlaying.value) {
+    isPaused.value = false
+  }
+}
+
 function handleAvatarError(event) {
   event.target.src = 'https://via.placeholder.com/64/cccccc/666666?text=?'
 }
+
+// Touch/Swipe functionality for mobile
+const touchStartX = ref(0)
+const touchEndX = ref(0)
+const minSwipeDistance = 50
+
+function handleTouchStart(event) {
+  touchStartX.value = event.changedTouches[0].screenX
+}
+
+function handleTouchEnd(event) {
+  touchEndX.value = event.changedTouches[0].screenX
+  handleSwipe()
+}
+
+function handleSwipe() {
+  const swipeDistance = touchStartX.value - touchEndX.value
+
+  if (Math.abs(swipeDistance) > minSwipeDistance) {
+    if (swipeDistance > 0) {
+      // Swipe left - next testimonial
+      props.nextTestimonial()
+    } else {
+      // Swipe right - previous testimonial
+      props.prevTestimonial()
+    }
+
+    // Pause auto-play briefly after swipe
+    if (isAutoPlaying.value) {
+      pauseAutoPlay()
+      setTimeout(() => resumeAutoPlay(), 3000)
+    }
+  }
+}
+
+// Keyboard navigation
+function handleKeyDown(event) {
+  switch (event.key) {
+    case 'ArrowLeft':
+      event.preventDefault()
+      props.prevTestimonial()
+      break
+    case 'ArrowRight':
+      event.preventDefault()
+      props.nextTestimonial()
+      break
+    case ' ':
+    case 'Enter':
+      event.preventDefault()
+      toggleAutoPlay()
+      break
+    case 'Escape':
+      event.preventDefault()
+      stopAutoPlay()
+      break
+  }
+}
+
+// Lifecycle hooks
+onMounted(() => {
+  // Auto-start slideshow if there are multiple testimonials
+  if (props.testimonials.length > 1) {
+    startAutoPlay()
+  }
+
+  // Add keyboard event listener
+  document.addEventListener('keydown', handleKeyDown)
+})
+
+onUnmounted(() => {
+  stopAutoPlay()
+  document.removeEventListener('keydown', handleKeyDown)
+})
 </script>
 
 <style scoped>
@@ -197,17 +462,28 @@ function handleAvatarError(event) {
 .testimonial-main {
   text-align: center;
   margin-bottom: var(--space-8);
-  animation: fadeIn 0.5s var(--ease-out);
+  position: relative;
 }
 
-.quote-icon {
-  margin-bottom: var(--space-4);
-  opacity: 0.3;
+.testimonial-main.slide-in {
+  animation: slideInFade 0.6s var(--ease-out);
+}
+
+.quote-decoration {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--color-primary-500);
+  opacity: 0.1;
+  z-index: 0;
 }
 
 .testimonial-content {
   max-width: 600px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .testimonial-text {
@@ -217,6 +493,7 @@ function handleAvatarError(event) {
   font-style: italic;
   margin: 0 0 var(--space-6) 0;
   position: relative;
+  padding: 0 var(--space-4);
 }
 
 .testimonial-text::before,
@@ -240,7 +517,7 @@ function handleAvatarError(event) {
   height: 64px;
   border-radius: var(--radius-full);
   overflow: hidden;
-  border: 3px solid var(--color-primary-500);
+  position: relative;
   box-shadow: var(--shadow-md);
 }
 
@@ -248,6 +525,24 @@ function handleAvatarError(event) {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.author-avatar:hover img {
+  transform: scale(1.05);
+}
+
+.avatar-ring {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 3px solid var(--color-primary-500);
+  border-radius: var(--radius-full);
+  background: linear-gradient(45deg, var(--color-primary-500), var(--color-secondary-500));
+  padding: 3px;
+  z-index: -1;
 }
 
 .author-info {
@@ -264,7 +559,18 @@ function handleAvatarError(event) {
 .author-title {
   font-size: var(--text-sm);
   color: var(--text-secondary);
-  margin: 0;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.author-rating {
+  display: flex;
+  align-items: center;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+  color: var(--color-accent-500, #fbbf24);
 }
 
 /* ===== CAROUSEL CONTROLS ===== */
@@ -398,15 +704,176 @@ function handleAvatarError(event) {
   text-overflow: ellipsis;
 }
 
-/* ===== ANIMATIONS ===== */
+/* ===== AUTO-PLAY CONTROLS ===== */
+.autoplay-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.autoplay-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.autoplay-btn:hover {
+  background: var(--color-primary-500);
+  color: var(--text-inverse);
+  border-color: var(--color-primary-500);
+}
+
+.autoplay-text {
+  font-family: var(--font-secondary);
+  font-weight: 500;
+}
+
+/* ===== ENHANCED INDICATORS ===== */
+.indicator {
+  position: relative;
+  overflow: hidden;
+}
+
+.indicator-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-primary-300);
+  border-radius: var(--radius-full);
+  animation: progressFill 5s linear infinite;
+}
+
+@keyframes progressFill {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ===== ENHANCED THUMBNAILS ===== */
+.thumbnail-avatar {
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbnail-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--color-primary-rgb), 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-inverse);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.thumbnail:hover .thumbnail-overlay {
+  opacity: 1;
+}
+
+/* ===== ENHANCED ANIMATIONS ===== */
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+.animate-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideInUp 0.6s var(--ease-out) forwards;
+}
+
+.animate-scale {
+  animation: scaleIn 0.3s var(--ease-out);
+}
+
+.pulse {
+  animation: pulseGlow 1.5s infinite;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slideInFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+  }
+
+  to {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(var(--color-primary-rgb), 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.6);
   }
 }
 
