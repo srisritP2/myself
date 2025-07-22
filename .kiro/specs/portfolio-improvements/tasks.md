@@ -71,6 +71,7 @@
   - [x] 5.1 Extract HeroSection from App.vue
 
 
+
     - Move hero section logic to dedicated component
     - Implement lazy image loading with error handling
     - Add animated counters with proper accessibility
