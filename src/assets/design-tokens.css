@@ -6,6 +6,9 @@
 /* Import the theme system */
 @import './themes.css';
 
+/* Import global section styles */
+@import './global-sections.css';
+
 /* ===== COMPONENT-SPECIFIC TOKENS ===== */
 
 /* Card System */

@@ -1,0 +1,530 @@
+/**
+ * Premium Hero Section Styles
+ * Modern, responsive, and theme-aware styling for the premium hero section
+ */
+
+/* ===== BASE HERO SECTION ===== */
+.premium-hero {
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) var(--space-4);
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+/* ===== BACKGROUND ELEMENTS ===== */
+.premium-hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.premium-hero__gradient-mesh {
+  position: absolute;
+  inset: 0;
+  opacity: 0.8;
+  transition: all var(--duration-slow) var(--ease-out);
+}
+
+.premium-hero__particles {
+  position: absolute;
+  inset: 0;
+}
+
+.premium-hero__particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--color-primary-500);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: premium-float 8s infinite ease-in-out;
+}
+
+/* ===== GLASS EFFECT CONTAINER ===== */
+.premium-hero__glass-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-5);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.08),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.premium-hero__glass-container:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ===== MAIN CONTAINER ===== */
+.premium-hero__container {
+  position: relative;
+  width: 100%;
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+/* ===== LAYOUT VARIANTS ===== */
+
+/* Split Layout (Default) */
+.premium-hero--split .premium-hero__container {
+  grid-template-columns: auto 1fr;
+  gap: var(--space-8);
+}
+
+/* Centered Layout */
+.premium-hero--centered .premium-hero__container {
+  grid-template-columns: 1fr;
+  text-align: center;
+  max-width: 700px;
+}
+
+.premium-hero--centered .premium-hero__profile {
+  order: -1;
+  margin-bottom: var(--space-4);
+}
+
+/* Minimal Layout */
+.premium-hero--minimal .premium-hero__container {
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  max-width: 600px;
+}
+
+.premium-hero--minimal .premium-hero__profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* ===== PROFILE SECTION ===== */
+.premium-hero__profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  min-width: 200px;
+}
+
+/* ===== CONTENT SECTION ===== */
+.premium-hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+/* ===== STATS SECTION ===== */
+.premium-hero__stats {
+  margin: var(--space-3) 0;
+}
+
+/* ===== ACTIONS SECTION ===== */
+.premium-hero__actions {
+  margin-top: var(--space-2);
+}
+
+/* ===== THEME VARIANTS ===== */
+
+/* Minimal Theme */
+.premium-hero--minimal {
+  background: var(--bg-primary);
+}
+
+.premium-hero--minimal .premium-hero__gradient-mesh {
+  display: none;
+}
+
+.premium-hero--minimal .premium-hero__particles {
+  display: none;
+}
+
+/* Gradient Theme */
+.premium-hero--gradient {
+  background: transparent;
+}
+
+.premium-hero--gradient .premium-hero__gradient-mesh {
+  opacity: 1;
+}
+
+/* Glass Theme */
+.premium-hero--glass {
+  background: var(--bg-secondary);
+}
+
+.premium-hero--glass .premium-hero__container {
+  background: rgba(var(--bg-primary), 0.8);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-12);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-2xl);
+}
+
+/* ===== ANIMATIONS ===== */
+
+/* Entrance animations - initially hidden */
+.premium-hero--animated .premium-hero__profile,
+.premium-hero--animated .premium-hero__content > *,
+.premium-hero--animated .premium-hero__stats,
+.premium-hero--animated .premium-hero__actions {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Visible state */
+.premium-hero--visible.premium-hero--animated .premium-hero__profile,
+.premium-hero--visible.premium-hero--animated .premium-hero__content > *,
+.premium-hero--visible.premium-hero--animated .premium-hero__stats,
+.premium-hero--visible.premium-hero--animated .premium-hero__actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Particle animation */
+@keyframes premium-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+/* Gradient mesh animation */
+.premium-hero--gradient .premium-hero__gradient-mesh {
+  animation: premium-gradient-shift 8s ease-in-out infinite;
+}
+
+@keyframes premium-gradient-shift {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Large Desktop (1280px+) */
+@media (min-width: 1280px) {
+  .premium-hero {
+    padding: var(--space-12) var(--space-6);
+  }
+  
+  .premium-hero--split .premium-hero__container {
+    gap: var(--space-20);
+  }
+  
+  .premium-hero__profile {
+    min-width: 240px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
+@media (max-width: 1279px) {
+  .premium-hero--split .premium-hero__container {
+    gap: var(--space-12);
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (max-width: 1023px) {
+  .premium-hero {
+    min-height: auto;
+    padding: var(--space-8) var(--space-4);
+  }
+  
+  .premium-hero__glass-container {
+    padding: var(--space-5);
+    border-radius: var(--radius-2xl);
+  }
+  
+  .premium-hero__container {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-6);
+    text-align: center;
+  }
+  
+  .premium-hero__profile {
+    order: -1;
+    min-width: auto;
+  }
+  
+  .premium-hero--glass .premium-hero__container {
+    padding: var(--space-6);
+  }
+}
+
+/* Mobile (640px - 767px) */
+@media (max-width: 767px) {
+  .premium-hero {
+    padding: var(--space-6) var(--space-3);
+  }
+  
+  .premium-hero__glass-container {
+    padding: var(--space-4);
+    border-radius: var(--radius-xl);
+  }
+  
+  .premium-hero__container {
+    gap: var(--space-4);
+  }
+  
+  .premium-hero__content {
+    gap: var(--space-3);
+  }
+  
+  .premium-hero__stats {
+    margin: var(--space-3) 0;
+  }
+  
+  .premium-hero__actions {
+    margin-top: var(--space-2);
+  }
+  
+  .premium-hero--glass .premium-hero__container {
+    padding: var(--space-4);
+    border-radius: var(--radius-xl);
+  }
+}
+
+/* Small Mobile (< 640px) */
+@media (max-width: 639px) {
+  .premium-hero {
+    padding: var(--space-6) var(--space-2);
+  }
+  
+  .premium-hero__container {
+    gap: var(--space-4);
+  }
+  
+  .premium-hero--minimal .premium-hero__profile {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  
+  .premium-hero--glass .premium-hero__container {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .premium-hero__particle {
+    animation: none;
+  }
+  
+  .premium-hero__gradient-mesh {
+    animation: none;
+  }
+  
+  .premium-hero--animated .premium-hero__profile,
+  .premium-hero--animated .premium-hero__content > *,
+  .premium-hero--animated .premium-hero__stats,
+  .premium-hero--animated .premium-hero__actions {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+  .premium-hero__gradient-mesh {
+    opacity: 0.3;
+  }
+  
+  .premium-hero__particle {
+    opacity: 0.8;
+  }
+  
+  .premium-hero--glass .premium-hero__container {
+    background: var(--bg-primary);
+    backdrop-filter: none;
+    border: 2px solid var(--border-primary);
+  }
+}
+
+/* Focus management */
+.premium-hero:focus-within {
+  outline: none;
+}
+
+/* Print styles */
+@media print {
+  .premium-hero {
+    min-height: auto;
+    background: white;
+    color: black;
+  }
+  
+  .premium-hero__background,
+  .premium-hero__particles,
+  .premium-hero__gradient-mesh {
+    display: none;
+  }
+  
+  .premium-hero--glass .premium-hero__container {
+    background: transparent;
+    backdrop-filter: none;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}
+
+/* ===== CROSS-BROWSER COMPATIBILITY ===== */
+
+/* Webkit-specific optimizations */
+@supports (-webkit-backdrop-filter: blur(10px)) {
+  .premium-hero--glass .premium-hero__container {
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+/* Firefox-specific optimizations */
+@-moz-document url-prefix() {
+  .premium-hero__gradient-mesh {
+    /* Firefox-specific gradient optimizations */
+    background-attachment: fixed;
+  }
+}
+
+/* Safari-specific optimizations */
+@supports (-webkit-appearance: none) {
+  .premium-hero__particle {
+    /* Safari-specific animation optimizations */
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Edge-specific optimizations */
+@supports (-ms-ime-align: auto) {
+  .premium-hero__container {
+    /* Edge-specific grid fallbacks */
+    display: -ms-grid;
+  }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* GPU acceleration for animations */
+.premium-hero__particle,
+.premium-hero__gradient-mesh {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Contain layout and paint */
+.premium-hero {
+  contain: layout style paint;
+  content-visibility: auto;
+  contain-intrinsic-size: 100vh;
+}
+
+.premium-hero__container {
+  contain: layout style;
+}
+
+/* Optimize animations for 60fps */
+.premium-hero__profile,
+.premium-hero__content > *,
+.premium-hero__stats,
+.premium-hero__actions {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Critical resource hints */
+.premium-hero__background {
+  contain: strict;
+}
+
+/* Optimize repaints */
+.premium-hero__particle {
+  contain: layout style paint;
+}
+
+/* Memory optimization */
+@media (max-width: 768px) {
+  .premium-hero__particles {
+    display: none; /* Disable particles on mobile for performance */
+  }
+  
+  .premium-hero__gradient-mesh {
+    opacity: 0.5; /* Reduce complexity on mobile */
+  }
+}
+
+/* ===== THEME-SPECIFIC ENHANCEMENTS ===== */
+
+/* Creative Gradient Theme Integration */
+:root[data-theme="creative-gradient"] .premium-hero--gradient {
+  background: transparent;
+}
+
+:root[data-theme="creative-gradient"] .premium-hero__glass-container {
+  background: var(--cg-glass-bg-medium);
+  backdrop-filter: var(--cg-glass-blur);
+  -webkit-backdrop-filter: var(--cg-glass-blur);
+  border: 1px solid var(--cg-glass-border);
+  box-shadow: var(--cg-shadow-interactive);
+}
+
+:root[data-theme="creative-gradient"] .premium-hero__glass-container:hover {
+  background: var(--cg-glass-bg-strong);
+  border-color: var(--cg-glass-border-hover);
+  box-shadow: var(--cg-shadow-heavy);
+}
+
+:root[data-theme="creative-gradient"] .premium-hero--gradient .premium-hero__container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Professional Dark Theme */
+:root[data-theme="professional-dark"] .premium-hero--minimal {
+  background: var(--bg-primary);
+}
+
+/* Minimal Elegant Theme */
+:root[data-theme="minimal-elegant"] .premium-hero {
+  background: var(--bg-primary);
+}
+
+/* Warm Professional Theme */
+:root[data-theme="warm-professional"] .premium-hero {
+  background: var(--bg-primary);
+}

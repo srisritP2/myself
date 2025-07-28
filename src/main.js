@@ -12,10 +12,13 @@ import './assets/themes.css'
 import './assets/design-tokens.css'
 // Import animation system
 import './assets/animations.css'
-import { registerAnimationDirectives } from './utils/animations'
 
 // Vuetify imports for Material Design UI
 import 'vuetify/styles' // Import Vuetify's base styles
+
+// Import Creative Gradient Theme v2.0 - Complete rewrite with global styles (MUST LOAD AFTER VUETIFY)
+import './assets/styles/creative-gradient-v2.css'
+// Animation directives removed - using CSS animations instead
 import { createVuetify } from 'vuetify' // Vuetify plugin
 import * as components from 'vuetify/components' // All Vuetify components
 import * as directives from 'vuetify/directives' // All Vuetify directives
@@ -86,8 +89,7 @@ app.use(pinia)
 app.use(router)
 app.use(vuetify)
 
-// Register animation directives
-registerAnimationDirectives(app)
+// Animation directives removed - using CSS animations instead
 
 // Mount the app to the #app element in index.html
 app.mount('#app')

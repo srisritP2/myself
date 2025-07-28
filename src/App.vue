@@ -48,12 +48,20 @@ body,
   font-size: var(--text-base);
   line-height: 1.6;
   color: var(--text-primary);
-  background: var(--bg-primary);
+  /* background removed to allow theme system to work */
   transition:
     background-color var(--duration-normal) var(--ease-out),
     color var(--duration-normal) var(--ease-out);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure Creative Gradient theme background is applied */
+[data-theme='creative-gradient'] body,
+[data-theme='creative-gradient'] #app,
+[data-theme='creative-gradient'] .v-application {
+  background: transparent !important;
+  background-attachment: fixed !important;
 }
 
 /* Typography Improvements */
@@ -74,22 +82,27 @@ h1 {
   font-size: var(--text-4xl);
   font-weight: 800;
 }
+
 h2 {
   font-size: var(--text-3xl);
   font-weight: 700;
 }
+
 h3 {
   font-size: var(--text-2xl);
   font-weight: 600;
 }
+
 h4 {
   font-size: var(--text-xl);
   font-weight: 600;
 }
+
 h5 {
   font-size: var(--text-lg);
   font-weight: 500;
 }
+
 h6 {
   font-size: var(--text-base);
   font-weight: 500;
@@ -108,9 +121,11 @@ p {
   h1 {
     font-size: var(--text-3xl);
   }
+
   h2 {
     font-size: var(--text-2xl);
   }
+
   h3 {
     font-size: var(--text-xl);
   }

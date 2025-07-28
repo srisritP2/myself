@@ -67,6 +67,35 @@
   --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* ===== GLASS MORPHISM DESIGN TOKENS ===== */
+  
+  /* Base Glass Properties */
+  --glass-bg-opacity: 0.1;
+  --glass-border-opacity: 0.2;
+  --glass-blur-light: 10px;
+  --glass-blur-medium: 20px;
+  --glass-blur-heavy: 30px;
+  
+  /* Glass Background Variants */
+  --glass-subtle-opacity: 0.05;
+  --glass-medium-opacity: 0.1;
+  --glass-strong-opacity: 0.15;
+  
+  /* Glass Interactive States */
+  --glass-hover-opacity: 0.2;
+  --glass-active-opacity: 0.25;
+  --glass-focus-opacity: 0.3;
+  
+  /* Glass Shadows */
+  --glass-shadow-light: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --glass-shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-shadow-heavy: 0 12px 48px rgba(0, 0, 0, 0.15);
+  
+  /* Glass Border Variants */
+  --glass-border-subtle: 0.1;
+  --glass-border-medium: 0.2;
+  --glass-border-strong: 0.3;
 }
 
 /* ===== THEME 1: PROFESSIONAL DARK ===== */
@@ -142,6 +171,13 @@
   --border-primary: var(--color-neutral-200);
   --border-secondary: var(--color-neutral-300);
   --border-accent: var(--color-primary-300);
+  
+  /* Glass Morphism Theme Colors */
+  --glass-bg: rgba(255, 255, 255, var(--glass-medium-opacity));
+  --glass-border: rgba(255, 255, 255, var(--glass-border-medium));
+  --glass-accent-bg: rgba(98, 125, 152, var(--glass-subtle-opacity));
+  --glass-hover-bg: rgba(255, 255, 255, var(--glass-hover-opacity));
+  --glass-focus-border: rgba(98, 125, 152, var(--glass-focus-opacity));
 }
 
 /* Professional Dark - Dark Mode Variant */
@@ -222,23 +258,39 @@
   --color-error: #ef4444;
   --color-info: var(--color-secondary-500);
   
-  /* Background Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --bg-accent: var(--color-primary-50);
-  --bg-gradient: var(--gradient-primary);
+  /* Background Colors - Transparent to allow gradient background */
+  --bg-primary: transparent;
+  --bg-secondary: transparent;
+  --bg-tertiary: transparent;
+  --bg-accent: transparent;
+  --bg-gradient: transparent;
   
-  /* Text Colors */
-  --text-primary: var(--color-neutral-900);
-  --text-secondary: var(--color-neutral-600);
-  --text-tertiary: var(--color-neutral-500);
+  /* Text Colors - White text for gradient background */
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-tertiary: rgba(255, 255, 255, 0.6);
   --text-inverse: #ffffff;
   
   /* Border Colors */
   --border-primary: var(--color-neutral-200);
   --border-secondary: var(--color-neutral-300);
   --border-accent: var(--color-primary-300);
+  
+  /* Glass Morphism Theme Colors */
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-subtle-bg: rgba(255, 255, 255, 0.08);
+  --glass-medium-bg: rgba(255, 255, 255, 0.15);
+  --glass-strong-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-accent-bg: rgba(168, 85, 247, 0.12);
+  --glass-hover-bg: rgba(255, 255, 255, 0.25);
+  --glass-focus-border: rgba(168, 85, 247, 0.4);
+  --glass-gradient-overlay: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(59, 130, 246, 0.08) 50%, rgba(236, 72, 153, 0.1) 100%);
+  
+  /* Enhanced glass shadows for Creative Gradient */
+  --glass-shadow-light: 0 4px 16px rgba(168, 85, 247, 0.1);
+  --glass-shadow-medium: 0 8px 32px rgba(168, 85, 247, 0.15);
+  --glass-shadow-heavy: 0 20px 60px rgba(168, 85, 247, 0.2);
 }
 
 /* Creative Gradient - Dark Mode Variant */
@@ -330,6 +382,13 @@
   --border-primary: var(--color-neutral-200);
   --border-secondary: var(--color-neutral-300);
   --border-accent: var(--color-secondary-300);
+  
+  /* Glass Morphism Theme Colors */
+  --glass-bg: rgba(100, 116, 139, var(--glass-medium-opacity));
+  --glass-border: rgba(100, 116, 139, var(--glass-border-medium));
+  --glass-accent-bg: rgba(59, 130, 246, var(--glass-subtle-opacity));
+  --glass-hover-bg: rgba(100, 116, 139, var(--glass-hover-opacity));
+  --glass-focus-border: rgba(59, 130, 246, var(--glass-focus-opacity));
 }
 
 /* Minimal Elegant - Dark Mode Variant */
@@ -421,6 +480,13 @@
   --border-primary: var(--color-neutral-200);
   --border-secondary: var(--color-neutral-300);
   --border-accent: var(--color-secondary-300);
+  
+  /* Glass Morphism Theme Colors */
+  --glass-bg: rgba(120, 113, 108, var(--glass-medium-opacity));
+  --glass-border: rgba(120, 113, 108, var(--glass-border-medium));
+  --glass-accent-bg: rgba(249, 115, 22, var(--glass-subtle-opacity));
+  --glass-hover-bg: rgba(120, 113, 108, var(--glass-hover-opacity));
+  --glass-focus-border: rgba(249, 115, 22, var(--glass-focus-opacity));
 }
 
 /* Warm Professional - Dark Mode Variant */
@@ -468,10 +534,10 @@
 .bg-theme-secondary { background-color: var(--color-secondary-500); }
 .bg-theme-accent { background-color: var(--color-accent-500); }
 
-/* Gradient Utilities (for Creative Gradient theme) */
-.bg-gradient-primary { background: var(--gradient-primary, var(--color-primary-500)); }
-.bg-gradient-secondary { background: var(--gradient-secondary, var(--color-secondary-500)); }
-.bg-gradient-accent { background: var(--gradient-accent, var(--color-accent-500)); }
+/* Gradient Utilities (for Creative Gradient theme) - DISABLED */
+.bg-gradient-primary { background: transparent !important; }
+.bg-gradient-secondary { background: transparent !important; }
+.bg-gradient-accent { background: transparent !important; }
 
 /* ===== THEME TRANSITIONS ===== */
 * {
@@ -485,4 +551,252 @@
 /* Disable transitions during theme switching to prevent flashing */
 .theme-switching * {
   transition: none !important;
+}
+
+/* ===== GLASS MORPHISM UTILITY CLASSES ===== */
+
+/* Base Glass Morphism Classes */
+.glass-base {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-medium);
+}
+
+.glass-subtle {
+  background: rgba(var(--glass-bg), var(--glass-subtle-opacity));
+  backdrop-filter: blur(var(--glass-blur-light));
+  border: 1px solid rgba(var(--glass-border), var(--glass-border-subtle));
+  box-shadow: var(--glass-shadow-light);
+}
+
+.glass-medium {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-medium);
+}
+
+.glass-strong {
+  background: rgba(var(--glass-bg), var(--glass-strong-opacity));
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  border: 1px solid rgba(var(--glass-border), var(--glass-border-strong));
+  box-shadow: var(--glass-shadow-heavy);
+}
+
+/* Interactive Glass States */
+.glass-interactive {
+  transition: all var(--duration-normal) var(--ease-out);
+  cursor: pointer;
+}
+
+.glass-interactive:hover {
+  background: var(--glass-hover-bg);
+  border-color: var(--glass-border);
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-heavy);
+}
+
+.glass-interactive:active {
+  background: rgba(var(--glass-bg), var(--glass-active-opacity));
+  transform: translateY(0);
+  box-shadow: var(--glass-shadow-medium);
+}
+
+.glass-interactive:focus {
+  outline: none;
+  border-color: var(--glass-focus-border);
+  box-shadow: 
+    var(--glass-shadow-medium),
+    0 0 0 3px rgba(var(--color-primary-500), 0.1);
+}
+
+/* Component-Specific Glass Classes */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow-medium);
+  padding: var(--space-6);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.glass-card:hover {
+  background: var(--glass-hover-bg);
+  transform: translateY(-4px);
+  box-shadow: var(--glass-shadow-heavy);
+}
+
+.glass-nav {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-light);
+}
+
+.glass-input {
+  background: rgba(var(--glass-bg), var(--glass-subtle-opacity));
+  backdrop-filter: blur(var(--glass-blur-light));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.glass-input:focus {
+  background: var(--glass-bg);
+  border-color: var(--glass-focus-border);
+  box-shadow: 
+    var(--glass-shadow-light),
+    0 0 0 3px rgba(var(--color-primary-500), 0.1);
+}
+
+.glass-button {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-6);
+  transition: all var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+}
+
+.glass-button:hover {
+  background: var(--glass-hover-bg);
+  transform: translateY(-1px);
+  box-shadow: var(--glass-shadow-medium);
+}
+
+.glass-button:active {
+  transform: translateY(0);
+  background: rgba(var(--glass-bg), var(--glass-active-opacity));
+}
+
+.glass-modal {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--glass-shadow-heavy);
+}
+
+.glass-overlay {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(var(--glass-blur-light));
+}
+
+/* Glass Morphism Text Containers */
+.glass-text {
+  background: rgba(var(--glass-bg), 0.8);
+  backdrop-filter: blur(var(--glass-blur-light));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+/* Glass Morphism Accent Variants */
+.glass-accent {
+  background: var(--glass-accent-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid rgba(var(--color-primary-500), 0.2);
+  box-shadow: var(--glass-shadow-medium);
+}
+
+.glass-accent:hover {
+  background: rgba(var(--color-primary-500), 0.15);
+  border-color: rgba(var(--color-primary-500), 0.3);
+}
+
+/* Browser Compatibility & Fallbacks */
+@supports not (backdrop-filter: blur(20px)) {
+  .glass-base,
+  .glass-subtle,
+  .glass-medium,
+  .glass-strong,
+  .glass-card,
+  .glass-nav,
+  .glass-input,
+  .glass-button,
+  .glass-modal,
+  .glass-text,
+  .glass-accent {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    backdrop-filter: none;
+  }
+  
+  .glass-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: none;
+  }
+}
+
+/* Performance Optimization */
+.glass-optimized {
+  will-change: backdrop-filter, background-color, transform;
+  contain: layout style paint;
+}
+
+/* Accessibility Support */
+@media (prefers-contrast: high) {
+  .glass-base,
+  .glass-subtle,
+  .glass-medium,
+  .glass-strong,
+  .glass-card,
+  .glass-nav,
+  .glass-input,
+  .glass-button,
+  .glass-modal,
+  .glass-text,
+  .glass-accent {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-primary);
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-interactive,
+  .glass-card,
+  .glass-input,
+  .glass-button {
+    transition: none;
+  }
+  
+  .glass-interactive:hover,
+  .glass-card:hover,
+  .glass-button:hover {
+    transform: none;
+  }
+}
+
+/* Low-end Device Optimization */
+@media (max-resolution: 150dpi) {
+  .glass-base,
+  .glass-medium,
+  .glass-strong,
+  .glass-card,
+  .glass-nav,
+  .glass-modal {
+    backdrop-filter: blur(var(--glass-blur-light));
+  }
+}
+
+/* Theme-Specific Glass Enhancements */
+:root[data-theme="creative-gradient"] .glass-gradient {
+  background: var(--glass-gradient-overlay);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--glass-shadow-medium);
+}
+
+:root[data-theme="creative-gradient"] .glass-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0.1;
+  border-radius: inherit;
+  pointer-events: none;
 }

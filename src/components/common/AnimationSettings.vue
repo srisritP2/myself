@@ -68,7 +68,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUIStore } from '@/stores/ui'
-import { prefersReducedMotion as checkReducedMotion } from '@/utils/animations'
+// Utility function to check if user prefers reduced motion
+function checkReducedMotion() {
+  if (typeof window === 'undefined') return false
+  try {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  } catch (error) {
+    return false
+  }
+}
 
 const uiStore = useUIStore()
 const menu = ref(false)

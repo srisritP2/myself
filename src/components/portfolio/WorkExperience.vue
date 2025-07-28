@@ -137,13 +137,24 @@ function handleLogoError(event) {
 .section-icon {
   width: 64px;
   height: 64px;
-  background: var(--bg-accent);
+  background: var(--glass-accent-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto var(--space-4);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--glass-shadow-medium);
+  transition: all var(--duration-normal) var(--ease-out);
+  color: var(--color-primary-600);
+}
+
+.section-icon:hover {
+  background: var(--glass-hover-bg);
+  transform: scale(1.05);
+  box-shadow: var(--glass-shadow-heavy);
+  color: var(--color-primary-700);
 }
 
 .section-title {
@@ -181,18 +192,20 @@ function handleLogoError(event) {
   gap: var(--space-6);
   margin-bottom: var(--space-8);
   position: relative;
-  background: var(--bg-primary);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
   border-radius: var(--radius-xl);
   padding: var(--space-6);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-primary);
+  box-shadow: var(--glass-shadow-medium);
+  border: 1px solid var(--glass-border);
   transition: all var(--duration-normal) var(--ease-out);
 }
 
 .experience-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-  border-color: var(--color-primary-300);
+  background: var(--glass-hover-bg);
+  box-shadow: var(--glass-shadow-heavy);
+  transform: translateY(-4px);
+  border-color: var(--glass-focus-border);
 }
 
 .experience-card::before {
@@ -215,11 +228,21 @@ function handleLogoError(event) {
   height: 64px;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-primary);
+  background: var(--glass-subtle-bg);
+  backdrop-filter: blur(var(--glass-blur-light));
+  border: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all var(--duration-fast) var(--ease-out);
+  box-shadow: var(--glass-shadow-light);
+}
+
+.company-logo:hover {
+  background: var(--glass-hover-bg);
+  border-color: var(--glass-focus-border);
+  box-shadow: var(--glass-shadow-medium);
+  transform: scale(1.05);
 }
 
 .company-logo img {
@@ -230,7 +253,7 @@ function handleLogoError(event) {
 }
 
 .company-logo:hover img {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 /* ===== EXPERIENCE CONTENT ===== */
@@ -356,21 +379,24 @@ function handleLogoError(event) {
 }
 
 .skill-tag {
-  background: var(--bg-accent);
+  background: var(--glass-accent-bg);
+  backdrop-filter: blur(var(--glass-blur-light));
   color: var(--text-primary);
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
   font-weight: 500;
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-light);
   transition: all var(--duration-fast) var(--ease-out);
 }
 
 .skill-tag:hover {
-  background: var(--color-primary-500);
-  color: var(--text-inverse);
-  border-color: var(--color-primary-500);
-  transform: translateY(-1px);
+  background: var(--glass-hover-bg);
+  color: var(--color-primary-600);
+  border-color: var(--glass-focus-border);
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-medium);
 }
 
 /* ===== ANIMATIONS ===== */
@@ -480,5 +506,203 @@ function handleLogoError(event) {
   .skill-tag:hover {
     transform: none;
   }
+}
+
+/* ===== THEME-SPECIFIC GLASS MORPHISM ENHANCEMENTS ===== */
+
+/* Creative Gradient Theme v2.0 - Using Global System */
+:root[data-theme='creative-gradient'] .work-experience-section {
+  position: relative;
+}
+
+:root[data-theme='creative-gradient'] .section-title {
+  color: var(--cg-text-primary) !important;
+  text-shadow: var(--cg-text-shadow) !important;
+}
+
+:root[data-theme='creative-gradient'] .section-subtitle {
+  color: var(--cg-text-secondary) !important;
+  text-shadow: var(--cg-text-shadow-light) !important;
+}
+
+:root[data-theme='creative-gradient'] .section-icon {
+  background: var(--cg-glass-bg-medium) !important;
+  backdrop-filter: var(--cg-glass-blur) !important;
+  -webkit-backdrop-filter: var(--cg-glass-blur) !important;
+  border: 1px solid var(--cg-glass-border) !important;
+  box-shadow: var(--cg-shadow-medium) !important;
+  transition: all var(--cg-transition-normal) !important;
+}
+
+:root[data-theme='creative-gradient'] .section-icon:hover {
+  background: var(--cg-glass-bg-strong) !important;
+  box-shadow: var(--cg-shadow-interactive) !important;
+  transform: translateY(-2px) !important;
+}
+
+:root[data-theme='creative-gradient'] .experience-card {
+  background: var(--cg-glass-bg-medium) !important;
+  backdrop-filter: var(--cg-glass-blur) !important;
+  -webkit-backdrop-filter: var(--cg-glass-blur) !important;
+  border: 1px solid var(--cg-glass-border) !important;
+  box-shadow: var(--cg-shadow-medium) !important;
+  border-radius: var(--cg-radius-xl) !important;
+  transition: all var(--cg-transition-normal) !important;
+}
+
+:root[data-theme='creative-gradient'] .experience-card:hover {
+  background: var(--cg-glass-bg-strong) !important;
+  border-color: var(--cg-glass-border-hover) !important;
+  box-shadow: var(--cg-shadow-interactive) !important;
+  transform: translateY(-4px) !important;
+}
+
+:root[data-theme='creative-gradient'] .job-title,
+:root[data-theme='creative-gradient'] .company-name {
+  color: var(--cg-text-primary) !important;
+  text-shadow: var(--cg-text-shadow-light) !important;
+}
+
+:root[data-theme='creative-gradient'] .job-description,
+:root[data-theme='creative-gradient'] .job-duration {
+  color: var(--cg-text-secondary) !important;
+  text-shadow: var(--cg-text-shadow-light) !important;
+}
+
+/* Enhanced Skill Tag Glass Effects */
+:root[data-theme='creative-gradient'] .skill-tag {
+  background: var(--cg-glass-bg-light) !important;
+  backdrop-filter: var(--cg-glass-blur-light) !important;
+  -webkit-backdrop-filter: var(--cg-glass-blur-light) !important;
+  border: 1px solid var(--cg-glass-border) !important;
+  color: var(--cg-text-primary) !important;
+  text-shadow: var(--cg-text-shadow-light) !important;
+  border-radius: var(--cg-radius-full) !important;
+  transition: all var(--cg-transition-fast) !important;
+  box-shadow: var(--cg-shadow-light) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+:root[data-theme='creative-gradient'] .skill-tag::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent) !important;
+  transition: left var(--cg-transition-normal) !important;
+}
+
+:root[data-theme='creative-gradient'] .skill-tag:hover::before {
+  left: 100% !important;
+}
+
+:root[data-theme='creative-gradient'] .skill-tag:hover {
+  background: var(--cg-glass-bg-medium) !important;
+  border-color: var(--cg-glass-border-hover) !important;
+  box-shadow: var(--cg-shadow-medium) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+:root[data-theme='creative-gradient'] .skill-tag:active {
+  transform: translateY(-1px) scale(1.01) !important;
+  box-shadow: var(--cg-shadow-light) !important;
+}
+
+:root[data-theme='creative-gradient'] .skill-tag:focus {
+  outline: none !important;
+  box-shadow:
+    var(--cg-shadow-medium),
+    0 0 0 3px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Professional Dark Theme - Dark Mode */
+:root[data-theme='professional-dark'][data-mode='dark'] .experience-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme='professional-dark'][data-mode='dark'] .experience-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(20, 184, 166, 0.3);
+}
+
+:root[data-theme='professional-dark'][data-mode='dark'] .company-logo {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme='professional-dark'][data-mode='dark'] .skill-tag {
+  background: rgba(20, 184, 166, 0.1);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  color: var(--color-secondary-400);
+}
+
+:root[data-theme='professional-dark'][data-mode='dark'] .skill-tag:hover {
+  background: rgba(20, 184, 166, 0.15);
+  border-color: rgba(20, 184, 166, 0.3);
+  color: var(--color-secondary-300);
+}
+
+/* Minimal Elegant Theme */
+:root[data-theme='minimal-elegant'] .experience-card {
+  background: rgba(100, 116, 139, 0.08);
+  border: 1px solid rgba(100, 116, 139, 0.15);
+}
+
+:root[data-theme='minimal-elegant'] .experience-card:hover {
+  background: rgba(100, 116, 139, 0.12);
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+:root[data-theme='minimal-elegant'] .skill-tag {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  color: var(--color-secondary-600);
+}
+
+:root[data-theme='minimal-elegant'] .skill-tag:hover {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.25);
+  color: var(--color-secondary-700);
+}
+
+/* Warm Professional Theme */
+:root[data-theme='warm-professional'] .experience-card {
+  background: rgba(120, 113, 108, 0.08);
+  border: 1px solid rgba(120, 113, 108, 0.15);
+}
+
+:root[data-theme='warm-professional'] .experience-card:hover {
+  background: rgba(120, 113, 108, 0.12);
+  border-color: rgba(249, 115, 22, 0.25);
+}
+
+:root[data-theme='warm-professional'] .skill-tag {
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  color: var(--color-secondary-600);
+}
+
+:root[data-theme='warm-professional'] .skill-tag:hover {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(249, 115, 22, 0.25);
+  color: var(--color-secondary-700);
+}
+
+/* Enhanced Timeline for Glass Morphism */
+.experience-timeline::before {
+  background: var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur-light));
+  box-shadow: var(--glass-shadow-light);
+}
+
+.experience-card::before {
+  background: var(--color-primary-500);
+  border: 3px solid var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-light));
+  box-shadow: var(--glass-shadow-light);
 }
 </style>

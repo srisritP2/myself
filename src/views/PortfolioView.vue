@@ -10,41 +10,34 @@
 
     <!-- Hero Section: Profile, counters, resume, social links -->
     <section id="hero" v-motion="shouldEnableAnimations ? 'fadeIn' : null">
-      <HeroCard
-        :profilePhotoUrl="profilePhotoUrl"
-        :onImgError="onImgError"
-        name="Sri Sri Tummu"
-        title="QA Lead | Automation Specialist | Mentor"
-        description="Transforming ideas into realities, creating interfaces that inspire and engage users dreams."
-        :expYears="expYears"
-        :projects="projects"
-        :clients="clients"
-        :socials="socials"
-        :resumeUrl="resumeUrl"
+      <PremiumHeroSection
+        :profile="profileData"
+        :stats="statsData"
+        :actions="actionsData"
+        :social="socialData"
+        theme="gradient"
+        layout="centered"
+        :animations-enabled="shouldEnableAnimations"
         class="transition-transform hover-lift"
       />
     </section>
 
-    <!-- About Section -->
+    <!-- What I Help Section -->
     <section
       id="about"
       v-motion="shouldEnableAnimations ? 'slideInUp' : null"
       class="section-wrapper"
     >
-      <DetailsSection icon="mdi-help-circle" title="What do I help?" class="card-hover">
-        I help teams deliver high-quality software through robust QA processes, automation, and
-        mentoring.
-      </DetailsSection>
+      <WhatIHelp :enableAnimations="shouldEnableAnimations" />
+    </section>
 
-      <!-- Professional Summary -->
-      <div v-motion="shouldEnableAnimations ? 'slideInUp' : null" class="section-wrapper">
-        <DetailsSection icon="mdi-account-tie" title="Professional Summary" class="card-hover">
-          <div class="professional-summary" :class="{ 'animate-fade-in': shouldEnableAnimations }">
-            Over 10 years of experience in QA, automation, and team leadership across multiple
-            domains.
-          </div>
-        </DetailsSection>
-      </div>
+    <!-- Professional Summary -->
+    <section
+      id="professional-summary"
+      v-motion="shouldEnableAnimations ? 'slideInUp' : null"
+      class="section-wrapper"
+    >
+      <ProfessionalSummary :enableAnimations="shouldEnableAnimations" />
     </section>
 
     <!-- Technical Skills -->
@@ -57,23 +50,13 @@
     </section>
 
     <!-- Achievements -->
-    <div v-motion="shouldEnableAnimations ? 'slideInUp' : null" class="section-wrapper">
-      <DetailsSection icon="mdi-trophy" title="Achievements" class="card-hover">
-        <div class="achievements-list" :class="{ 'animate-fade-in': shouldEnableAnimations }">
-          ISTQB Certified, Best QA Lead 2022, Speaker at QA Summit 2023
-        </div>
-      </DetailsSection>
-    </div>
-
-    <!-- Professional Summary -->
-    <div v-motion="shouldEnableAnimations ? 'slideInUp' : null" class="section-wrapper">
-      <DetailsSection icon="mdi-account-tie" title="Professional Summary" class="card-hover">
-        <div class="professional-summary" :class="{ 'animate-fade-in': shouldEnableAnimations }">
-          Over 10 years of experience in QA, automation, and team leadership across multiple
-          domains.
-        </div>
-      </DetailsSection>
-    </div>
+    <section
+      id="achievements"
+      v-motion="shouldEnableAnimations ? 'slideInUp' : null"
+      class="section-wrapper"
+    >
+      <Achievements :enableAnimations="shouldEnableAnimations" />
+    </section>
 
     <!-- Work Experience -->
     <section
@@ -85,47 +68,40 @@
     </section>
 
     <!-- Education -->
-    <div v-motion="shouldEnableAnimations ? 'slideInUp' : null" class="section-wrapper">
-      <DetailsSection icon="mdi-school" title="Education" class="card-hover">
-        <div class="education-content" :class="{ 'animate-fade-in': shouldEnableAnimations }">
-          B.Tech in Computer Science, JNTU Hyderabad
-        </div>
-      </DetailsSection>
-    </div>
+    <section
+      id="education"
+      v-motion="shouldEnableAnimations ? 'slideInUp' : null"
+      class="section-wrapper"
+    >
+      <Education :enableAnimations="shouldEnableAnimations" />
+    </section>
 
     <!-- Co-Curricular Activities -->
-    <div v-motion="shouldEnableAnimations ? 'slideInUp' : null" class="section-wrapper">
-      <DetailsSection icon="mdi-run-fast" title="Co-Curricular Activities" class="card-hover">
-        <div class="activities-content" :class="{ 'animate-fade-in': shouldEnableAnimations }">
-          Speaker at QA events, Hackathon mentor, Volunteer for tech-for-good initiatives
-        </div>
-      </DetailsSection>
-    </div>
+    <section
+      id="cocurricular"
+      v-motion="shouldEnableAnimations ? 'slideInUp' : null"
+      class="section-wrapper"
+    >
+      <CoCurricularActivities :enableAnimations="shouldEnableAnimations" />
+    </section>
 
     <!-- Hobbies & Interests -->
-    <div v-motion="shouldEnableAnimations ? 'slideInUp' : null" class="section-wrapper">
-      <DetailsSection icon="mdi-emoticon-happy" title="Hobbies & Interests" class="card-hover">
-        <div class="hobbies-list stagger-list" :class="{ animate: shouldEnableAnimations }">
-          <div
-            v-for="hobby in hobbies"
-            :key="hobby.name"
-            class="hobby-item transition-transform hover-scale"
-          >
-            <v-icon size="28" color="primary">{{ hobby.icon }}</v-icon>
-            <span>{{ hobby.name }}</span>
-          </div>
-        </div>
-      </DetailsSection>
-    </div>
+    <section
+      id="hobbies"
+      v-motion="shouldEnableAnimations ? 'slideInUp' : null"
+      class="section-wrapper"
+    >
+      <HobbiesInterests :enableAnimations="shouldEnableAnimations" />
+    </section>
 
     <!-- Personal Profile -->
-    <div v-motion="shouldEnableAnimations ? 'slideInUp' : null" class="section-wrapper">
-      <DetailsSection icon="mdi-account-circle" title="Personal Profile" class="card-hover">
-        <div class="profile-content" :class="{ 'animate-fade-in': shouldEnableAnimations }">
-          Passionate about quality, technology, and helping others grow in their careers.
-        </div>
-      </DetailsSection>
-    </div>
+    <section
+      id="personal-profile"
+      v-motion="shouldEnableAnimations ? 'slideInUp' : null"
+      class="section-wrapper"
+    >
+      <PersonalProfile :enableAnimations="shouldEnableAnimations" />
+    </section>
 
     <!-- Testimonials Carousel -->
     <section
@@ -204,10 +180,16 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useUIStore } from '@/stores/ui'
-import HeroCard from '@/components/HeroCard.vue'
-import DetailsSection from '@/components/DetailsSection.vue'
+import PremiumHeroSection from '@/components/premium/PremiumHeroSection.vue'
 import WorkExperience from '@/components/portfolio/WorkExperience.vue'
 import SkillsSection from '@/components/portfolio/SkillsSection.vue'
+import WhatIHelp from '@/components/portfolio/WhatIHelp.vue'
+import ProfessionalSummary from '@/components/portfolio/ProfessionalSummary.vue'
+import Achievements from '@/components/portfolio/Achievements.vue'
+import Education from '@/components/portfolio/Education.vue'
+import CoCurricularActivities from '@/components/portfolio/CoCurricularActivities.vue'
+import HobbiesInterests from '@/components/portfolio/HobbiesInterests.vue'
+import PersonalProfile from '@/components/portfolio/PersonalProfile.vue'
 import Testimonials from '@/components/Testimonials.vue'
 import UserDetailsForm from '@/components/UserDetailsForm.vue'
 import AnimationSettings from '@/components/common/AnimationSettings.vue'
@@ -221,11 +203,6 @@ const shouldEnableAnimations = computed(() => uiStore.shouldEnableAnimations)
 
 // Set up default and fallback profile images
 const profilePhotoUrl = ref(import.meta.env.BASE_URL + 'Sri.jpg')
-const defaultAvatar = import.meta.env.BASE_URL + 'SS.svg'
-function onImgError(e) {
-  e.target.onerror = null
-  e.target.src = defaultAvatar
-}
 
 // Animated counters for experience, projects, and clients
 const expYears = ref(0)
@@ -265,13 +242,7 @@ function scrollToTop() {
 
 // Theme system is now handled by ThemeSwitcher component
 
-// Social/contact icons for quick access
-const socials = [
-  { icon: 'mdi-linkedin', url: 'https://linkedin.com/in/srisri-t' },
-  { icon: 'mdi-github', url: 'https://github.com/srisri.tummu' },
-  { icon: 'mdi-email', url: 'mailto:srisri.tummu@email.com' },
-  { icon: 'mdi-phone', url: 'tel:+91 9493034647' },
-]
+// Note: Social links are now handled by socialData for the premium hero section
 
 // Testimonials carousel data and logic
 const testimonials = [
@@ -316,14 +287,7 @@ const techStack = [
   { name: 'HTML5', icon: 'mdi-language-html5' },
   { name: 'CSS3', icon: 'mdi-language-css3' },
 ]
-const hobbies = [
-  { name: 'Painting', icon: 'mdi-palette' },
-  { name: 'Music', icon: 'mdi-music' },
-  { name: 'Travel', icon: 'mdi-airplane' },
-  { name: 'Volunteering', icon: 'mdi-hand-heart' },
-  { name: 'Reading', icon: 'mdi-book-open-page-variant' },
-  { name: 'Preaching', icon: 'mdi-church' },
-]
+// Note: hobbies data moved to HobbiesInterests component
 
 // Add experience data for LinkedIn-style cards
 const experience = [
@@ -398,6 +362,83 @@ Experience in Testing Web and Windows Applications. Handled Client Demonstration
 // Resume download URL (placed in public/ for static serving)
 const resumeUrl = import.meta.env.BASE_URL + 'resume.pdf'
 
+// Premium Hero Section Data Structure
+const profileData = ref({
+  name: 'Sri Sri Tummu',
+  title: 'QA Lead | Automation Specialist | Mentor',
+  description:
+    'Passionate about delivering high-quality software through comprehensive testing strategies, automation frameworks, and continuous improvement. Experienced in leading QA teams and implementing robust testing processes.',
+  imageUrl: profilePhotoUrl.value,
+  location: 'Hyderabad, India',
+  status: 'available',
+  skills: [
+    'Test Automation',
+    'Quality Assurance',
+    'Selenium WebDriver',
+    'Team Leadership',
+    'API Testing',
+    'Performance Testing',
+    'CI/CD Integration',
+    'Test Strategy',
+  ],
+})
+
+const statsData = ref({
+  experience: 10,
+  projects: 285,
+  clients: 190,
+  satisfaction: 98,
+})
+
+const actionsData = ref({
+  primaryCTA: {
+    label: 'Download Resume',
+    icon: 'mdi-download',
+    action: () => {
+      const link = document.createElement('a')
+      link.href = resumeUrl
+      link.download = 'Sri_Sri_Tummu_Resume.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    },
+  },
+  secondaryCTA: {
+    label: 'Contact Me',
+    icon: 'mdi-email',
+    action: () => {
+      const contactSection = document.querySelector('#contact')
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' })
+      }
+    },
+  },
+  resumeUrl: resumeUrl,
+})
+
+const socialData = ref([
+  {
+    platform: 'linkedin',
+    url: 'https://linkedin.com/in/srisri-t',
+    icon: 'mdi-linkedin',
+  },
+  {
+    platform: 'github',
+    url: 'https://github.com/srisri.tummu',
+    icon: 'mdi-github',
+  },
+  {
+    platform: 'email',
+    url: 'mailto:srisri.tummu@email.com',
+    icon: 'mdi-email',
+  },
+  {
+    platform: 'phone',
+    url: 'tel:+91 9493034647',
+    icon: 'mdi-phone',
+  },
+])
+
 // Animate sections on scroll for entrance effect
 function animateOnScroll(entries, observer) {
   entries.forEach(entry => {
@@ -419,18 +460,22 @@ onMounted(() => {
 
 /* Portfolio View Specific Styles */
 .portfolio-view {
-  padding-top: 70px; /* Account for fixed navigation */
+  padding-top: 70px;
+  /* Account for fixed navigation */
 }
 
 /* Section spacing adjustments for navigation */
 section {
-  scroll-margin-top: 80px; /* Offset for smooth scrolling */
+  scroll-margin-top: 80px;
+  /* Offset for smooth scrolling */
 }
 
 /* Adjust theme switcher position to not conflict with navigation */
 .global-theme-switcher-wrapper {
-  top: 80px; /* Move below navigation */
-  z-index: 999; /* Below navigation */
+  top: 80px;
+  /* Move below navigation */
+  z-index: 999;
+  /* Below navigation */
 }
 
 /* Section wrapper improvements */
@@ -441,7 +486,8 @@ section {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .portfolio-view {
-    padding-top: 60px; /* Smaller navigation on mobile */
+    padding-top: 60px;
+    /* Smaller navigation on mobile */
   }
 
   section {

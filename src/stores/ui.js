@@ -1,13 +1,21 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { prefersReducedMotion } from '@/utils/animations'
+// Utility function to check if user prefers reduced motion
+function prefersReducedMotion() {
+  if (typeof window === 'undefined') return false
+  try {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  } catch (error) {
+    return false
+  }
+}
 
 /**
  * UI store for managing global UI state
  */
 export const useUIStore = defineStore('ui', () => {
   // State
-  const theme = ref(localStorage.getItem('theme') || 'professional-dark')
+  const theme = ref(localStorage.getItem('theme') || 'creative-gradient')
   const darkMode = ref(localStorage.getItem('darkMode') === 'true' || false)
   const notifications = ref([])
   const modals = ref([])
