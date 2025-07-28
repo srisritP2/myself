@@ -78,7 +78,7 @@ const getStatusText = status => {
 .hero-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-1);
   max-width: 100%;
   position: relative;
 }
@@ -87,7 +87,7 @@ const getStatusText = status => {
 .hero-content__main {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-1);
   position: relative;
 }
 
@@ -143,8 +143,8 @@ const getStatusText = status => {
 
 .hero-content__description {
   font-size: clamp(1rem, 1.5vw, 1.125rem);
-  line-height: 1.6;
-  margin: var(--space-2) 0 0 0;
+  line-height: 1.4;
+  margin: var(--space-1) 0 0 0;
   color: var(--text-tertiary);
   max-width: 600px;
   opacity: 0;
@@ -155,7 +155,7 @@ const getStatusText = status => {
 
 /* ===== SKILLS SECTION ===== */
 .hero-content__skills {
-  margin: var(--space-3) 0 var(--space-2) 0;
+  margin: var(--space-2) 0 var(--space-1) 0;
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInUp 0.8s ease-out 0.8s forwards;
@@ -164,8 +164,8 @@ const getStatusText = status => {
 .hero-content__skills-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
+  gap: var(--space-1);
+  margin-top: var(--space-2);
 }
 
 .hero-content__skill-chip {
@@ -296,10 +296,12 @@ const getStatusText = status => {
     transform: scale(1);
     opacity: 0.3;
   }
+
   50% {
     transform: scale(1.5);
     opacity: 0.1;
   }
+
   100% {
     transform: scale(2);
     opacity: 0;
@@ -312,6 +314,7 @@ const getStatusText = status => {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

@@ -27,59 +27,126 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  animationDuration: {
+    type: Number,
+    default: 2000,
+  },
+  animationDelay: {
+    type: Number,
+    default: 300,
+  },
+  animationEasing: {
+    type: String,
+    default: 'easeOutQuart',
+    validator: value =>
+      ['linear', 'easeOutQuart', 'easeOutCubic', 'easeInOutQuart'].includes(value),
+  },
+  showProgress: {
+    type: Boolean,
+    default: true,
+  },
+  columns: {
+    type: Number,
+    default: null,
+  },
+  customStats: {
+    type: Array,
+    default: null,
+  },
 })
 
 // Animated counters
 const animatedStats = ref({})
 
-// Computed display stats
-const displayStats = computed(() => ({
-  experience: {
-    label: 'Years Experience',
-    value: props.stats.experience || 0,
-    suffix: '+',
-    max: 15,
-    showProgress: true,
-  },
-  projects: {
-    label: 'Projects Completed',
-    value: props.stats.projects || 0,
-    suffix: '+',
-    max: 100,
-    showProgress: true,
-  },
-  clients: {
-    label: 'Happy Clients',
-    value: props.stats.clients || 0,
-    suffix: '+',
-    max: 50,
-    showProgress: true,
-  },
-  satisfaction: {
-    label: 'Satisfaction Rate',
-    value: props.stats.satisfaction || 0,
-    suffix: '%',
-    max: 100,
-    showProgress: true,
-  },
-}))
+// Computed display stats with customization support
+const displayStats = computed(() => {
+  // If custom stats are provided, use them
+  if (props.customStats && props.customStats.length > 0) {
+    const customStatsObj = {}
+    props.customStats.forEach((stat, index) => {
+      const key = stat.key || `custom_${index}`
+      customStatsObj[key] = {
+        label: stat.label || 'Custom Stat',
+        value: stat.value || 0,
+        suffix: stat.suffix || '',
+        max: stat.max || 100,
+        showProgress: stat.showProgress !== undefined ? stat.showProgress : props.showProgress,
+        color: stat.color || null,
+        icon: stat.icon || null,
+      }
+    })
+    return customStatsObj
+  }
 
-// Animation function
-const animateNumber = (key, target, duration = 2000) => {
+  // Default stats configuration
+  const defaultStats = {
+    experience: {
+      label: 'Years Experience',
+      value: props.stats.experience || 0,
+      suffix: '+',
+      max: 15,
+      showProgress: props.showProgress,
+    },
+    projects: {
+      label: 'Projects Completed',
+      value: props.stats.projects || 0,
+      suffix: '+',
+      max: 100,
+      showProgress: props.showProgress,
+    },
+    clients: {
+      label: 'Happy Clients',
+      value: props.stats.clients || 0,
+      suffix: '+',
+      max: 50,
+      showProgress: props.showProgress,
+    },
+    satisfaction: {
+      label: 'Satisfaction Rate',
+      value: props.stats.satisfaction || 0,
+      suffix: '%',
+      max: 100,
+      showProgress: props.showProgress,
+    },
+  }
+
+  // Filter out stats that don't have values (unless explicitly set to 0)
+  const filteredStats = {}
+  Object.entries(defaultStats).forEach(([key, stat]) => {
+    if (props.stats[key] !== undefined || stat.value > 0) {
+      filteredStats[key] = stat
+    }
+  })
+
+  return filteredStats
+})
+
+// Easing functions
+const easingFunctions = {
+  linear: t => t,
+  easeOutQuart: t => 1 - Math.pow(1 - t, 4),
+  easeOutCubic: t => 1 - Math.pow(1 - t, 3),
+  easeInOutQuart: t => (t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2),
+}
+
+// Enhanced animation function with configurable easing
+const animateNumber = (key, target, duration = null) => {
   if (!props.animated) {
     animatedStats.value[key] = target
     return
   }
 
+  const animDuration = duration || props.animationDuration
+  const easingFn = easingFunctions[props.animationEasing] || easingFunctions.easeOutQuart
   const start = 0
   const startTime = Date.now()
 
   const update = () => {
     const elapsed = Date.now() - startTime
-    const progress = Math.min(elapsed / duration, 1)
-    const easeOutQuart = 1 - Math.pow(1 - progress, 4)
+    const progress = Math.min(elapsed / animDuration, 1)
+    const easedProgress = easingFn(progress)
 
-    animatedStats.value[key] = Math.floor(start + (target - start) * easeOutQuart)
+    animatedStats.value[key] = Math.floor(start + (target - start) * easedProgress)
 
     if (progress < 1) {
       requestAnimationFrame(update)
@@ -95,12 +162,20 @@ const getProgressWidth = (value, max) => {
   return `${percentage}%`
 }
 
-// Initialize animations
+// Grid columns configuration
+const gridColumns = computed(() => {
+  if (props.columns) {
+    return `repeat(${props.columns}, 1fr)`
+  }
+  return 'repeat(auto-fit, minmax(180px, 1fr))'
+})
+
+// Initialize animations with configurable timing
 onMounted(() => {
   Object.entries(displayStats.value).forEach(([key, stat], index) => {
     setTimeout(() => {
-      animateNumber(key, stat.value, 2000 + index * 200)
-    }, index * 300)
+      animateNumber(key, stat.value, props.animationDuration + index * 200)
+    }, index * props.animationDelay)
   })
 })
 
@@ -124,7 +199,7 @@ watch(
 
 .hero-stats__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: v-bind(gridColumns);
   gap: var(--space-6);
 }
 

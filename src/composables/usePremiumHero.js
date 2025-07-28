@@ -321,10 +321,14 @@ export function usePremiumHero(props = {}, config = {}) {
    */
   const initializeAnimations = () => {
     createAnimationTimeline()
+    watchThemeChanges()
 
     if (finalConfig.mouse.enabled && heroRef.value) {
       heroRef.value.addEventListener('mousemove', handleMouseMove, { passive: true })
     }
+
+    // Initialize theme-specific animations
+    updateThemeSpecificAnimations(currentTheme.value)
   }
 
   /**
@@ -345,6 +349,171 @@ export function usePremiumHero(props = {}, config = {}) {
    */
   const getCurrentTheme = () => {
     return document.documentElement.dataset.theme || 'professional-dark'
+  }
+
+  /**
+   * Theme-aware reactive state
+   */
+  const currentTheme = ref(getCurrentTheme())
+
+  /**
+   * Watch for theme changes
+   */
+  const watchThemeChanges = () => {
+    if (typeof window !== 'undefined' && 'MutationObserver' in window) {
+      const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+            const newTheme = getCurrentTheme()
+            if (newTheme !== currentTheme.value) {
+              currentTheme.value = newTheme
+              handleThemeChange(newTheme)
+            }
+          }
+        })
+      })
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      })
+
+      onUnmounted(() => {
+        observer.disconnect()
+      })
+    }
+  }
+
+  /**
+   * Handle theme change
+   */
+  const handleThemeChange = newTheme => {
+    // Update CSS custom properties for mouse position
+    if (heroRef.value) {
+      heroRef.value.style.setProperty('--mouse-x', `${mousePosition.value.x * 100}%`)
+      heroRef.value.style.setProperty('--mouse-y', `${mousePosition.value.y * 100}%`)
+    }
+
+    // Trigger re-animation if needed for theme-specific effects
+    if (isVisible.value && animationsEnabled.value) {
+      nextTick(() => {
+        updateThemeSpecificAnimations(newTheme)
+      })
+    }
+  }
+
+  /**
+   * Update theme-specific animations
+   */
+  const updateThemeSpecificAnimations = theme => {
+    if (!heroRef.value) return
+
+    const themeConfigs = {
+      'creative-gradient': {
+        particleColor: 'var(--cg-primary-start)',
+        glowEffect: true,
+        gradientAnimation: true,
+      },
+      'professional-dark': {
+        particleColor: 'var(--color-secondary-400)',
+        glowEffect: true,
+        gradientAnimation: false,
+      },
+      'minimal-elegant': {
+        particleColor: 'var(--color-secondary-500)',
+        glowEffect: false,
+        gradientAnimation: false,
+      },
+      'warm-professional': {
+        particleColor: 'var(--color-secondary-500)',
+        glowEffect: false,
+        gradientAnimation: false,
+      },
+    }
+
+    const config = themeConfigs[theme] || themeConfigs['professional-dark']
+
+    // Update particle colors
+    const particles = heroRef.value.querySelectorAll('.premium-hero__particle')
+    particles.forEach(particle => {
+      particle.style.background = config.particleColor
+      if (config.glowEffect) {
+        particle.style.boxShadow = `0 0 15px ${config.particleColor}`
+      } else {
+        particle.style.boxShadow = 'none'
+      }
+    })
+  }
+
+  /**
+   * Get theme-specific configuration
+   */
+  const getThemeConfig = (theme = currentTheme.value) => {
+    const themeConfigs = {
+      'creative-gradient': {
+        animations: {
+          ...finalConfig.animations,
+          easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', // More bouncy for creative theme
+        },
+        particles: {
+          ...finalConfig.particles,
+          count: 12, // More particles for creative theme
+          speed: 10,
+        },
+        mouse: {
+          ...finalConfig.mouse,
+          sensitivity: 0.8, // More sensitive for creative theme
+        },
+      },
+      'professional-dark': {
+        animations: {
+          ...finalConfig.animations,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)', // Standard easing
+        },
+        particles: {
+          ...finalConfig.particles,
+          count: 8,
+          speed: 8,
+        },
+        mouse: {
+          ...finalConfig.mouse,
+          sensitivity: 0.5,
+        },
+      },
+      'minimal-elegant': {
+        animations: {
+          ...finalConfig.animations,
+          duration: 600, // Faster for minimal theme
+          easing: 'cubic-bezier(0.4, 0, 0.6, 1)',
+        },
+        particles: {
+          ...finalConfig.particles,
+          count: 4, // Fewer particles for minimal theme
+          opacity: 0.3,
+        },
+        mouse: {
+          ...finalConfig.mouse,
+          sensitivity: 0.3, // Less sensitive for minimal theme
+        },
+      },
+      'warm-professional': {
+        animations: {
+          ...finalConfig.animations,
+          easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)', // Smooth easing
+        },
+        particles: {
+          ...finalConfig.particles,
+          count: 6,
+          speed: 6,
+        },
+        mouse: {
+          ...finalConfig.mouse,
+          sensitivity: 0.4,
+        },
+      },
+    }
+
+    return themeConfigs[theme] || themeConfigs['professional-dark']
   }
 
   /**
@@ -394,12 +563,18 @@ export function usePremiumHero(props = {}, config = {}) {
     animationTimeline,
     animationsEnabled,
     performanceMetrics,
+    currentTheme,
 
     // Methods
     handleImageError,
     initializeAnimations,
     playEntranceAnimations,
     cleanup,
+
+    // Theme methods
+    handleThemeChange,
+    updateThemeSpecificAnimations,
+    getThemeConfig,
 
     // Utilities
     getCurrentTheme,

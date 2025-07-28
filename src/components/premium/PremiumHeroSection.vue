@@ -183,6 +183,6 @@ defineExpose({
 })
 </script>
 
-<style scoped>
+<style>
 @import './styles/premium-hero.css';
 </style>

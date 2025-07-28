@@ -149,8 +149,11 @@ p {
   border-radius: var(--radius-2xl);
   padding: var(--space-8) var(--space-6) var(--space-6) var(--space-6);
   margin: var(--space-8) auto 0 auto;
-  max-width: 760px;
-  width: calc(100% - var(--space-10));
+  max-width: 900px;
+  width: calc(100% - var(--space-8));
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   transition:
     transform var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out),

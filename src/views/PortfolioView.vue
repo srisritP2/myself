@@ -16,7 +16,7 @@
         :actions="actionsData"
         :social="socialData"
         theme="gradient"
-        layout="centered"
+        layout="split"
         :animations-enabled="shouldEnableAnimations"
         class="transition-transform hover-lift"
       />
@@ -481,6 +481,35 @@ section {
 /* Section wrapper improvements */
 .section-wrapper {
   margin-bottom: var(--space-8);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Footer styling */
+.site-footer {
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+  margin: var(--space-12) auto 0 auto;
+  max-width: 900px;
+  width: calc(100% - var(--space-8));
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-primary);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-sizing: border-box;
+  overflow: hidden;
+  word-wrap: break-word;
+  line-height: 1.6;
+}
+
+.section-divider {
+  border: none;
+  height: 1px;
+  background: var(--border-primary);
+  margin: var(--space-12) auto;
+  max-width: 900px;
+  width: calc(100% - var(--space-8));
 }
 
 /* Responsive adjustments */
@@ -496,6 +525,15 @@ section {
 
   .global-theme-switcher-wrapper {
     top: 70px;
+  }
+
+  .site-footer {
+    margin: var(--space-8) auto 0 auto;
+    padding: var(--space-6) var(--space-3);
+  }
+
+  .section-divider {
+    margin: var(--space-8) auto;
   }
 }
 </style>

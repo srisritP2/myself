@@ -1,7 +1,7 @@
 <template>
   <div class="hero-profile">
     <!-- Profile Image -->
-    <div class="hero-profile__image-container">
+    <div class="hero-profile__image-container" ref="imageContainer">
       <!-- Loading Skeleton -->
       <div
         v-if="isLoading"
@@ -11,17 +11,32 @@
         <div class="hero-profile__skeleton-circle"></div>
       </div>
 
-      <!-- Profile Image -->
-      <img
-        :src="profileImageUrl"
-        :alt="`${profile.name} profile photo`"
-        class="hero-profile__image hero-profile__image--loaded"
-        @load="handleImageLoad"
-        @error="handleImageError"
-        :loading="lazyLoad ? 'lazy' : 'eager'"
-        :decoding="'async'"
-        :fetchpriority="lazyLoad ? 'low' : 'high'"
-      />
+      <!-- Profile Image with WebP Support -->
+      <picture class="hero-profile__picture">
+        <source
+          v-if="supportsWebP && profile.imageUrl"
+          :srcset="getWebPSrcSet(profile.imageUrl)"
+          type="image/webp"
+          sizes="(max-width: 480px) 80px, (max-width: 768px) 100px, 120px"
+        />
+        <source
+          v-if="profile.imageUrl"
+          :srcset="getJpegSrcSet(profile.imageUrl)"
+          type="image/jpeg"
+          sizes="(max-width: 480px) 80px, (max-width: 768px) 100px, 120px"
+        />
+        <img
+          :src="profileImageUrl"
+          :alt="`${profile.name} profile photo`"
+          class="hero-profile__image hero-profile__image--loaded"
+          @load="handleImageLoad"
+          @error="handleImageError"
+          :loading="lazyLoad ? 'lazy' : 'eager'"
+          :decoding="'async'"
+          :fetchpriority="lazyLoad ? 'low' : 'high'"
+          sizes="(max-width: 480px) 80px, (max-width: 768px) 100px, 120px"
+        />
+      </picture>
 
       <!-- Status Indicator -->
       <div
@@ -114,8 +129,27 @@ const profileImageUrl = computed(() => {
   return props.profile.imageUrl || '/profile-photo.svg'
 })
 
-// Note: WebP and JPEG srcset functions removed as they're not currently used
-// They can be re-added when implementing responsive image optimization
+// Generate WebP srcset for responsive images
+const getWebPSrcSet = imageUrl => {
+  if (!imageUrl) return ''
+
+  // Generate different sizes for responsive images
+  const sizes = [120, 240, 360] // 1x, 2x, 3x for high DPI displays
+  const baseUrl = imageUrl.replace(/\.(jpg|jpeg|png)$/i, '')
+
+  return sizes.map(size => `${baseUrl}-${size}w.webp ${size}w`).join(', ')
+}
+
+// Generate JPEG srcset as fallback
+const getJpegSrcSet = imageUrl => {
+  if (!imageUrl) return ''
+
+  // Generate different sizes for responsive images
+  const sizes = [120, 240, 360] // 1x, 2x, 3x for high DPI displays
+  const baseUrl = imageUrl.replace(/\.(jpg|jpeg|png)$/i, '')
+
+  return sizes.map(size => `${baseUrl}-${size}w.jpg ${size}w`).join(', ')
+}
 
 // Handle successful image load
 const handleImageLoad = event => {
@@ -167,11 +201,40 @@ const preloadImage = src => {
   })
 }
 
-// Initialize image loading
+// Intersection Observer for lazy loading optimization
+const imageContainer = ref(null)
+const isIntersecting = ref(false)
+
+// Initialize image loading with intersection observer
 onMounted(async () => {
   // Always start with loading false for immediate display
   isLoading.value = false
 
+  // Set up intersection observer for lazy loading
+  if (props.lazyLoad && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            isIntersecting.value = true
+            observer.disconnect()
+          }
+        })
+      },
+      {
+        rootMargin: '50px', // Start loading 50px before the image comes into view
+        threshold: 0.1,
+      }
+    )
+
+    if (imageContainer.value) {
+      observer.observe(imageContainer.value)
+    }
+  } else {
+    isIntersecting.value = true
+  }
+
+  // Preload critical images (non-lazy)
   if (!props.lazyLoad && props.profile.imageUrl) {
     try {
       await preloadImage(props.profile.imageUrl)
