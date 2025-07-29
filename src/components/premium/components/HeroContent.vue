@@ -108,6 +108,32 @@ const getStatusText = status => {
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInUp 0.8s ease-out 0.2s forwards;
+
+  /* Glass shade effect */
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.05),
+    0 8px 16px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(1px);
+}
+
+.hero-content__name::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-md);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.hero-content__name:hover::before {
+  opacity: 1;
 }
 
 .hero-content__name::after {
@@ -127,6 +153,49 @@ const getStatusText = status => {
   to {
     width: 60px;
   }
+}
+
+/* Professional Dark Theme Glass Effects */
+:root[data-theme='professional-dark'] .hero-content__name {
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 8px 32px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.8),
+    rgba(20, 184, 166, 0.9)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+:root[data-theme='professional-dark'] .hero-content__name::before {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Creative Gradient Theme Glass Effects */
+:root[data-theme='creative-gradient'] .hero-content__name {
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.2),
+    0 4px 24px rgba(0, 0, 0, 0.1);
+  background: var(
+    --cg-gradient-text,
+    linear-gradient(135deg, var(--text-primary), var(--color-primary-500))
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+:root[data-theme='creative-gradient'] .hero-content__name::before {
+  background: var(--cg-glass-bg-medium);
+  backdrop-filter: var(--cg-glass-blur);
+  border: 1px solid var(--cg-glass-border);
 }
 
 .hero-content__title {

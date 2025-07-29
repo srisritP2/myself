@@ -11,32 +11,17 @@
         <div class="hero-profile__skeleton-circle"></div>
       </div>
 
-      <!-- Profile Image with WebP Support -->
-      <picture class="hero-profile__picture">
-        <source
-          v-if="supportsWebP && profile.imageUrl"
-          :srcset="getWebPSrcSet(profile.imageUrl)"
-          type="image/webp"
-          sizes="(max-width: 480px) 80px, (max-width: 768px) 100px, 120px"
-        />
-        <source
-          v-if="profile.imageUrl"
-          :srcset="getJpegSrcSet(profile.imageUrl)"
-          type="image/jpeg"
-          sizes="(max-width: 480px) 80px, (max-width: 768px) 100px, 120px"
-        />
-        <img
-          :src="profileImageUrl"
-          :alt="`${profile.name} profile photo`"
-          class="hero-profile__image hero-profile__image--loaded"
-          @load="handleImageLoad"
-          @error="handleImageError"
-          :loading="lazyLoad ? 'lazy' : 'eager'"
-          :decoding="'async'"
-          :fetchpriority="lazyLoad ? 'low' : 'high'"
-          sizes="(max-width: 480px) 80px, (max-width: 768px) 100px, 120px"
-        />
-      </picture>
+      <!-- Profile Image -->
+      <img
+        :src="profileImageUrl"
+        :alt="`${profile.name} profile photo`"
+        class="hero-profile__image hero-profile__image--loaded"
+        @load="handleImageLoad"
+        @error="handleImageError"
+        :loading="lazyLoad ? 'lazy' : 'eager'"
+        :decoding="'async'"
+        :fetchpriority="lazyLoad ? 'low' : 'high'"
+      />
 
       <!-- Status Indicator -->
       <div
@@ -100,56 +85,22 @@ const emit = defineEmits(['image-error', 'image-load'])
 // Reactive state
 const imageError = ref(false)
 const imageLoaded = ref(false)
-const isLoading = ref(true)
+const isLoading = ref(false)
 const hasError = ref(false)
-const supportsWebP = ref(false)
 
-// WebP support detection
-const detectWebPSupport = () => {
-  return new Promise(resolve => {
-    const webP = new Image()
-    webP.onload = webP.onerror = () => {
-      resolve(webP.height === 2)
-    }
-    webP.src =
-      'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA'
-  })
-}
-
-// Initialize WebP support detection
-onMounted(async () => {
-  supportsWebP.value = await detectWebPSupport()
-})
+// Image loading is now simplified without WebP detection
 
 // Computed profile image URL with fallback
 const profileImageUrl = computed(() => {
+  let imageUrl
   if (imageError.value || hasError.value) {
-    return '/profile-photo.svg' // Fallback to existing profile photo
+    imageUrl = import.meta.env.BASE_URL + 'profile-photo.svg' // Fallback to SVG
+  } else {
+    imageUrl = props.profile.imageUrl || import.meta.env.BASE_URL + 'Sri.jpg' // Use Sri.jpg as primary image
   }
-  return props.profile.imageUrl || '/profile-photo.svg'
+  console.log('Hero profile image URL:', imageUrl)
+  return imageUrl
 })
-
-// Generate WebP srcset for responsive images
-const getWebPSrcSet = imageUrl => {
-  if (!imageUrl) return ''
-
-  // Generate different sizes for responsive images
-  const sizes = [120, 240, 360] // 1x, 2x, 3x for high DPI displays
-  const baseUrl = imageUrl.replace(/\.(jpg|jpeg|png)$/i, '')
-
-  return sizes.map(size => `${baseUrl}-${size}w.webp ${size}w`).join(', ')
-}
-
-// Generate JPEG srcset as fallback
-const getJpegSrcSet = imageUrl => {
-  if (!imageUrl) return ''
-
-  // Generate different sizes for responsive images
-  const sizes = [120, 240, 360] // 1x, 2x, 3x for high DPI displays
-  const baseUrl = imageUrl.replace(/\.(jpg|jpeg|png)$/i, '')
-
-  return sizes.map(size => `${baseUrl}-${size}w.jpg ${size}w`).join(', ')
-}
 
 // Handle successful image load
 const handleImageLoad = event => {
@@ -161,6 +112,7 @@ const handleImageLoad = event => {
 
 // Handle image loading errors
 const handleImageError = event => {
+  console.error('Hero profile image failed to load:', event.target.src)
   isLoading.value = false
   imageError.value = true
   hasError.value = true
@@ -168,8 +120,10 @@ const handleImageError = event => {
   // Try fallback image
   const img = event.target
   if (img && !img.src.includes('profile-photo.svg')) {
-    img.src = '/profile-photo.svg'
-    console.warn('Profile image failed to load, using fallback')
+    img.src = import.meta.env.BASE_URL + 'profile-photo.svg'
+    console.warn('Profile image failed to load, using fallback:', img.src)
+  } else {
+    console.error('All image fallbacks failed for hero profile')
   }
 
   emit('image-error', event)
@@ -259,48 +213,79 @@ onMounted(async () => {
 /* ===== PROFILE IMAGE CONTAINER ===== */
 .hero-profile__image-container {
   position: relative;
-  width: 120px;
-  height: 120px;
-  border-radius: var(--radius-full);
+  width: 220px;
+  height: 280px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
-  padding: 3px;
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+  padding: 4px;
   transition: all var(--duration-normal) var(--ease-out);
   box-shadow:
     var(--shadow-lg),
-    0 0 0 3px rgba(var(--color-primary-500), 0.1),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+    0 0 0 4px rgba(var(--color-primary-500), 0.2),
+    0 0 20px rgba(var(--color-primary-500), 0.3),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.3);
   cursor: pointer;
   will-change: transform, box-shadow;
+  border: 2px solid var(--color-primary-400);
 }
 
 .hero-profile__image-container::before {
   content: '';
   position: absolute;
-  inset: -2px;
-  border-radius: var(--radius-full);
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(
-    135deg,
-    var(--color-primary-500),
-    var(--color-secondary-500),
-    var(--color-accent-500)
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
   );
-  z-index: -1;
-  opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-out);
+  border-radius: inherit;
+  transition: left 0.9s ease-out;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .hero-profile__image-container:hover {
-  transform: scale(1.08) rotate(2deg);
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700));
+  transform: translateY(-3px) scale(1.05);
   box-shadow:
     var(--shadow-2xl),
-    0 0 0 6px rgba(var(--color-primary-500), 0.15),
-    0 0 30px rgba(var(--color-primary-500), 0.3),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+    0 0 0 4px rgba(var(--color-primary-500), 0.3),
+    0 0 30px rgba(var(--color-primary-500), 0.4),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.4);
+  border-color: var(--color-primary-300);
 }
 
 .hero-profile__image-container:hover::before {
-  opacity: 1;
+  left: 100%;
+}
+
+/* Add a secondary flash effect */
+.hero-profile__image-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  transition: left 0.4s ease-out 0.1s;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hero-profile__image-container:hover::after {
+  left: 100%;
 }
 
 .hero-profile__image-container:active {
@@ -313,7 +298,7 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xl);
   background: var(--bg-secondary);
   transition: all var(--duration-normal) var(--ease-out);
   filter: brightness(1) contrast(1.05) saturate(1.1);
@@ -322,6 +307,30 @@ onMounted(async () => {
 .hero-profile__image-container:hover .hero-profile__image {
   filter: brightness(1.1) contrast(1.1) saturate(1.2);
   transform: scale(1.02);
+}
+
+/* Add a subtle pulse animation to draw attention */
+@keyframes profilePulse {
+  0%,
+  100% {
+    box-shadow:
+      var(--shadow-lg),
+      0 0 0 4px rgba(var(--color-primary-500), 0.2),
+      0 0 20px rgba(var(--color-primary-500), 0.3),
+      inset 0 0 0 3px rgba(255, 255, 255, 0.3);
+  }
+
+  50% {
+    box-shadow:
+      var(--shadow-lg),
+      0 0 0 4px rgba(var(--color-primary-500), 0.3),
+      0 0 25px rgba(var(--color-primary-500), 0.4),
+      inset 0 0 0 3px rgba(255, 255, 255, 0.4);
+  }
+}
+
+.hero-profile__image-container {
+  animation: profilePulse 3s ease-in-out infinite;
 }
 
 /* ===== LOADING SKELETON ===== */
@@ -339,7 +348,7 @@ onMounted(async () => {
 .hero-profile__skeleton-circle {
   width: 100%;
   height: 100%;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xl);
   background: linear-gradient(
     90deg,
     var(--bg-secondary) 25%,
@@ -357,6 +366,7 @@ onMounted(async () => {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
@@ -390,6 +400,7 @@ onMounted(async () => {
   0% {
     background-position: -200% -200%;
   }
+
   100% {
     background-position: 200% 200%;
   }
@@ -479,6 +490,7 @@ onMounted(async () => {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.7;
     transform: scale(1.2);
@@ -490,6 +502,7 @@ onMounted(async () => {
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -530,8 +543,8 @@ onMounted(async () => {
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1024px) {
   .hero-profile__image-container {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
   }
 }
 
@@ -541,8 +554,8 @@ onMounted(async () => {
   }
 
   .hero-profile__image-container {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
 
   .hero-profile__status {
@@ -568,8 +581,8 @@ onMounted(async () => {
 
 @media (max-width: 480px) {
   .hero-profile__image-container {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
   }
 
   .hero-profile__name {
@@ -669,6 +682,7 @@ onMounted(async () => {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

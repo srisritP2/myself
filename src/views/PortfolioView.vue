@@ -201,8 +201,7 @@ const uiStore = useUIStore()
 // Animation settings
 const shouldEnableAnimations = computed(() => uiStore.shouldEnableAnimations)
 
-// Set up default and fallback profile images
-const profilePhotoUrl = ref(import.meta.env.BASE_URL + 'Sri.jpg')
+// Profile images are now handled directly in components
 
 // Animated counters for experience, projects, and clients
 const expYears = ref(0)
@@ -368,7 +367,7 @@ const profileData = ref({
   title: 'QA Lead | Automation Specialist | Mentor',
   description:
     'Passionate about delivering high-quality software through comprehensive testing strategies, automation frameworks, and continuous improvement. Experienced in leading QA teams and implementing robust testing processes.',
-  imageUrl: profilePhotoUrl.value,
+  imageUrl: import.meta.env.BASE_URL + 'Sri.jpg',
   location: 'Hyderabad, India',
   status: 'available',
   skills: [

@@ -717,6 +717,7 @@ function resetForm() {
   grid-template-columns: 1fr 1fr;
   gap: var(--space-6);
   margin-bottom: var(--space-8);
+  align-items: start;
 }
 
 .form-grid.animate-stagger .form-field {
@@ -768,6 +769,7 @@ function resetForm() {
   color: var(--text-primary);
   font-family: var(--font-secondary);
   font-size: var(--text-base);
+  font-weight: 500;
   line-height: 1.5;
   transition: all var(--duration-fast) var(--ease-out);
   outline: none;
@@ -808,7 +810,13 @@ function resetForm() {
 
 .form-input:focus::placeholder {
   color: var(--text-tertiary);
-  opacity: 0.7;
+  opacity: 0.5;
+}
+
+/* Ensure placeholders don't show when labels are floating */
+.input-group.has-value .form-input::placeholder,
+.input-group.is-focused .form-input::placeholder {
+  color: transparent;
 }
 
 /* Floating Labels */

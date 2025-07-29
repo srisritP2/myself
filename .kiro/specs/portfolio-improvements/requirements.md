@@ -73,7 +73,20 @@ The improvements focus on refactoring the monolithic architecture, enhancing per
 5. WHEN users share content THEN the system SHALL provide easy social sharing buttons with proper tracking
 6. WHEN content is updated THEN meta tags SHALL be dynamically generated based on the current content
 
-### Requirement 6: Security & Production Readiness
+### Requirement 6: UI/UX Critical Fixes
+
+**User Story:** As a user visiting the portfolio, I want all visual elements to display correctly and forms to be properly aligned so that I can have a smooth browsing experience.
+
+#### Acceptance Criteria
+
+1. WHEN profile images are loaded THEN they SHALL display correctly without conflicts or missing files
+2. WHEN forms are displayed THEN input fields SHALL be properly aligned without overlapping placeholders
+3. WHEN form inputs are focused THEN the text color SHALL be dark and readable
+4. WHEN the hero section is viewed THEN the username SHALL have a glass shade effect consistent with the professional dark theme
+5. WHEN profile photos are displayed THEN they SHALL use square or modern design instead of rounded photos
+6. WHEN viewing on mobile THEN the design SHALL be optimized with separate responsive handling and proper background themes for all sections
+
+### Requirement 7: Security & Production Readiness
 
 **User Story:** As a system administrator, I want the application to be secure and production-ready so that user data is protected and the system can handle real-world traffic.
 

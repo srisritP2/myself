@@ -25,11 +25,29 @@
         <div class="main-profile-card glass-card">
           <div class="profile-avatar">
             <img
-              src="/profile-photo.jpg"
-              alt="Profile Photo"
+              :src="profileImageUrl"
+              alt="Sri Sri Tummu Profile Photo"
               class="avatar-image"
               @error="handleImageError"
+              @load="handleImageLoad"
             />
+            <div v-if="imageLoading" class="image-loading">
+              <div class="loading-spinner"></div>
+            </div>
+            <div v-if="imageError" class="image-fallback">
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
             <div class="avatar-status">
               <svg
                 width="16"
@@ -214,6 +232,11 @@ defineProps({
   },
 })
 
+// Image handling
+const imageLoading = ref(false)
+const imageError = ref(false)
+const profileImageUrl = ref(import.meta.env.BASE_URL + 'Sri.jpg')
+
 const personalInfo = ref({
   name: 'Sri Sri T',
   title: 'Senior QA Engineer & Test Automation Specialist',
@@ -351,7 +374,19 @@ const funFacts = ref([
 ])
 
 function handleImageError(event) {
-  event.target.style.display = 'none'
+  console.warn('Profile image failed to load:', event.target.src)
+  imageLoading.value = false
+  imageError.value = true
+
+  // Try fallback image
+  if (event.target.src.includes('Sri.jpg')) {
+    event.target.src = import.meta.env.BASE_URL + 'profile-photo.svg'
+  }
+}
+
+function handleImageLoad() {
+  imageLoading.value = false
+  imageError.value = false
 }
 </script>
 
@@ -468,16 +503,87 @@ function handleImageError(event) {
 .avatar-image {
   width: 120px;
   height: 120px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xl);
   object-fit: cover;
   border: 3px solid var(--glass-border);
   box-shadow: var(--glass-shadow-medium);
   transition: all var(--duration-normal) var(--ease-out);
+  position: relative;
+}
+
+.avatar-image::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(45deg, var(--color-primary-500), var(--color-secondary-500));
+  border-radius: var(--radius-xl);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.image-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-light));
+  border-radius: var(--radius-xl);
+  border: 3px solid var(--glass-border);
+}
+
+.image-fallback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-light));
+  border-radius: var(--radius-xl);
+  border: 3px solid var(--glass-border);
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--glass-border);
+  border-top: 2px solid var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .main-profile-card:hover .avatar-image {
   transform: scale(1.05);
   box-shadow: var(--glass-shadow-heavy);
+}
+
+.main-profile-card:hover .avatar-image::before {
+  opacity: 1;
 }
 
 .avatar-status {
@@ -849,15 +955,33 @@ function handleImageError(event) {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .personal-profile-section {
+    padding: var(--space-12) 0;
+    background: var(--bg-primary);
+  }
+
+  .section-container {
+    padding: 0 var(--space-4);
+  }
+
   .main-profile-card {
     flex-direction: column;
     text-align: center;
     padding: var(--space-6);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-medium));
   }
 
   .profile-stats {
     justify-content: center;
     gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    min-width: 70px;
+    background: var(--glass-subtle-bg);
+    backdrop-filter: blur(var(--glass-blur-light));
   }
 
   .details-grid {
@@ -865,10 +989,21 @@ function handleImageError(event) {
     gap: var(--space-3);
   }
 
+  .detail-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-medium));
+  }
+
   .values-grid,
   .fun-facts-list {
     grid-template-columns: 1fr;
     gap: var(--space-3);
+  }
+
+  .values-card,
+  .fun-facts-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-medium));
   }
 
   .section-title {
@@ -881,6 +1016,17 @@ function handleImageError(event) {
 
   .profile-name {
     font-size: var(--text-2xl);
+  }
+
+  .avatar-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .image-loading,
+  .image-fallback {
+    width: 100px;
+    height: 100px;
   }
 }
 
@@ -990,15 +1136,16 @@ function handleImageError(event) {
 }
 
 :root[data-theme='creative-gradient'] .profile-name,
-:root[data-theme='creative-gradient'] .value-title,
-:root[data-theme='creative-gradient'] .fact-title {
+:root[data-theme='creative-gradient'] .values-title,
+:root[data-theme='creative-gradient'] .fun-facts-title {
   color: var(--cg-text-primary) !important;
-  text-shadow: var(--cg-text-shadow-light) !important;
+  text-shadow: var(--cg-text-shadow) !important;
 }
 
-:root[data-theme='creative-gradient'] .profile-description,
+:root[data-theme='creative-gradient'] .profile-title,
+:root[data-theme='creative-gradient'] .profile-bio p,
 :root[data-theme='creative-gradient'] .value-description,
-:root[data-theme='creative-gradient'] .fact-description {
+:root[data-theme='creative-gradient'] .fact-text {
   color: var(--cg-text-secondary) !important;
   text-shadow: var(--cg-text-shadow-light) !important;
 }
