@@ -124,20 +124,16 @@
     <section
       id="contact"
       v-motion="shouldEnableAnimations ? 'slideInUp' : null"
-      class="section-wrapper"
+      class="section-wrapper cta-section"
     >
       <div class="main-card card-hover user-details-cta-card">
         <div class="cta-header">
-          <v-icon
-            color="primary"
-            size="32"
-            class="mr-2 transition-transform"
-            :class="{ 'animate-pulse': shouldEnableAnimations }"
-            >mdi-account-plus</v-icon
-          >
-          <span class="cta-title">Get Your Own Portfolio</span>
+          <div class="cta-icon">
+            <v-icon color="primary" size="40" class="transition-transform">mdi-account-plus</v-icon>
+          </div>
+          <h2 class="cta-title">Get Your Own Portfolio</h2>
+          <p class="cta-desc">Share your details and get a stunning portfolio like this!</p>
         </div>
-        <div class="cta-desc">Share your details and get a stunning portfolio like this!</div>
         <UserDetailsForm :enableAnimations="shouldEnableAnimations" />
       </div>
     </section>
@@ -485,6 +481,82 @@ section {
   width: 100%;
 }
 
+/* CTA Section Styling */
+.cta-section {
+  margin: var(--space-16) auto;
+}
+
+.user-details-cta-card {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+  padding: var(--space-6) var(--space-4);
+}
+
+.cta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: rgba(99, 102, 241, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-full);
+  margin: 0 auto var(--space-4);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  transition: all 0.3s ease;
+}
+
+.cta-icon:hover {
+  background: rgba(99, 102, 241, 0.15);
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+}
+
+.cta-title {
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4) 0;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.cta-desc {
+  font-size: var(--text-xl);
+  color: var(--text-secondary);
+  margin: 0 auto;
+  line-height: 1.5;
+  max-width: 600px;
+  text-align: center;
+}
+
+/* Creative Gradient Theme Support for CTA */
+:root[data-theme='creative-gradient'] .cta-icon {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+:root[data-theme='creative-gradient'] .cta-icon:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15) !important;
+}
+
+:root[data-theme='creative-gradient'] .cta-title {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+:root[data-theme='creative-gradient'] .cta-desc {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
 /* Footer styling */
 .site-footer {
   text-align: center;
@@ -526,6 +598,23 @@ section {
     top: 70px;
   }
 
+  .cta-title {
+    font-size: var(--text-3xl);
+  }
+
+  .cta-desc {
+    font-size: var(--text-lg);
+  }
+
+  .cta-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .user-details-cta-card {
+    margin: 0 var(--space-4);
+  }
+
   .site-footer {
     margin: var(--space-8) auto 0 auto;
     padding: var(--space-6) var(--space-3);
@@ -533,6 +622,29 @@ section {
 
   .section-divider {
     margin: var(--space-8) auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-header {
+    padding: var(--space-4) var(--space-2);
+  }
+
+  .cta-title {
+    font-size: var(--text-2xl);
+  }
+
+  .cta-desc {
+    font-size: var(--text-base);
+  }
+
+  .cta-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .user-details-cta-card {
+    margin: 0 var(--space-2);
   }
 }
 </style>

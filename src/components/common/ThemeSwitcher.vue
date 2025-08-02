@@ -118,9 +118,15 @@ function toggleDarkMode() {
 }
 
 .theme-menu {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
-  border: 1px solid var(--border-primary);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 }
 
 .theme-options {
@@ -136,19 +142,23 @@ function toggleDarkMode() {
   padding: var(--space-3);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-out);
+  transition: all 0.2s ease;
   border: 1px solid transparent;
   position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
 }
 
 .theme-option:hover {
-  background-color: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 
 .theme-option--active {
-  background-color: var(--bg-accent);
-  border-color: var(--border-accent);
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
 }
 
 .theme-preview {
@@ -210,6 +220,48 @@ function toggleDarkMode() {
   color: var(--text-secondary);
   line-height: 1.3;
   margin-top: 2px;
+}
+
+/* Creative Gradient Theme Support */
+:root[data-theme='creative-gradient'] .theme-menu {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow:
+    0 8px 32px rgba(255, 255, 255, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+:root[data-theme='creative-gradient'] .theme-option {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+:root[data-theme='creative-gradient'] .theme-option:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+:root[data-theme='creative-gradient'] .theme-option--active {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15) !important;
+}
+
+:root[data-theme='creative-gradient'] .theme-name,
+:root[data-theme='creative-gradient'] .toggle-label {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+:root[data-theme='creative-gradient'] .theme-description,
+:root[data-theme='creative-gradient'] .toggle-description {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Responsive adjustments */
